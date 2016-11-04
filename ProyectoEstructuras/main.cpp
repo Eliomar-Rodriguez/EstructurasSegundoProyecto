@@ -9,13 +9,13 @@ struct arco {
 };
 
 struct vertice{
-    char ciudad;
+    char ciudad [20];
     struct vertice *sigV;
     struct arco *sigA;
     bool visitado;
 }*grafo;
 
-void insertarCiudad(char pciudad){
+void insertarCiudad(char pciudad[20]){
 
 struct vertice *nnv = new vertice();
 nnv->ciudad=pciudad;
@@ -25,7 +25,7 @@ nnv->sigV=grafo;
 grafo =nnv;
 }
 
-void insertarRutas(char porigen,char pdestino, int pdistancia){
+void insertarRutas(char porigen[],char pdestino[], int pdistancia){
 
     struct vertice *origen =buscar (porigen);
     struct vertice *destino =buscar (pdestino);
@@ -44,7 +44,7 @@ void insertarRutas(char porigen,char pdestino, int pdistancia){
 
 int main()
 {
-    insertarCiudad('H');
+    insertarCiudad('Ho');
     insertarCiudad('F');
     insertarCiudad('E');
     insertarCiudad('D');
