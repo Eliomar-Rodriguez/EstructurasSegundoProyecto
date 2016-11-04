@@ -93,14 +93,14 @@ int main()
     insertarCiudad("Liberia");
     insertarCiudad("Tempisque");
     insertarCiudad("Cabuya");
-    insertarCiudad("Isla San Lucas");
-    insertarCiudad("Tortuguero");
+    insertarCiudad("Caño Blanco");
     insertarCiudad("Fortuna");
+    insertarCiudad("Manzanillo");
 
 
 
-    insertarRutas('A','C',7);
-    insertarRutas('A','D',2);
+    insertarRutas("Los Chiles Frontera","Santa Rosa",304);
+    insertarRutas("Santa Rosa","Liberia",73);
     insertarRutas('E','F',3);
     insertarRutas('D','E',4);
     insertarRutas('C','D',5);
