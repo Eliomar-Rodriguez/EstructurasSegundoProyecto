@@ -1,31 +1,48 @@
 #include <SFML/Graphics.hpp>
+#include<string.h>
+#include<iostream>
+
+using namespace std;
 
 
 struct arco {
-    //char destino;
+    //char destino[];
     struct vertice *destino;
     int distancia;
     struct arco *sigA;
 };
 
 struct vertice{
-    char ciudad;
+    char ciudad[];
     struct vertice *sigV;
     struct arco *sigA;
     bool visitado;
 }*grafo;
 
-void insertarCiudad(char pciudad){
+void insertarCiudad(char pciudad[]){
 
-struct vertice *nnv = new vertice();
-nnv->ciudad=pciudad;
-nnv->visitado =false;
+    struct vertice *nnv = new vertice();
+    strcpy(nnv->ciudad,pciudad);
+    //nnv->ciudad=pciudad;
+    nnv->visitado =false;
 
-nnv->sigV=grafo;
-grafo =nnv;
+    nnv->sigV=grafo;
+    grafo =nnv;
 }
+struct vertice* buscar(char pciudad[]){
 
-void insertarRutas(char porigen,char pdestino, int pdistancia){
+    struct vertice *tempV = grafo;
+    while(tempV!=NULL){
+
+        if(tempV->ciudad==pciudad)
+            return tempV;
+
+        tempV=tempV->sigV;
+
+    }
+    return NULL;
+}
+void insertarRutas(char porigen[],char pdestino[], int pdistancia){
 
     struct vertice *origen =buscar (porigen);
     struct vertice *destino =buscar (pdestino);
@@ -42,15 +59,46 @@ void insertarRutas(char porigen,char pdestino, int pdistancia){
     origen->sigA=nna;
 }
 
+
 int main()
 {
-    insertarCiudad('H');
-    insertarCiudad('F');
-    insertarCiudad('E');
-    insertarCiudad('D');
-    insertarCiudad('C');
-    insertarCiudad('B');
-    insertarCiudad('A');
+    // 25 ciudades
+    insertarCiudad("San Jose");
+    insertarCiudad("Naranjo");
+    insertarCiudad("Palmares");
+    insertarCiudad("Zarcero");
+    insertarCiudad("Alajuela");
+    insertarCiudad("Sucre");
+    insertarCiudad("Nicoya");
+    insertarCiudad("Ciudad Neilly");
+    insertarCiudad("Perez Zeledon");
+    insertarCiudad("Limon");
+    insertarCiudad("Guapiles");
+    insertarCiudad("Santa Rosa");
+    insertarCiudad("Heredia");
+    insertarCiudad("Sarapiqui");
+    insertarCiudad("Talamanca");
+    insertarCiudad("Sixaola");
+    insertarCiudad("Santa Cruz");
+    insertarCiudad("Los Chiles Frontera");
+    insertarCiudad("Cartago");
+    insertarCiudad("Turrialba");
+    insertarCiudad("Jaco");
+    insertarCiudad("Quepos");
+    insertarCiudad("Golfito");
+    insertarCiudad("Parrita");
+    insertarCiudad("Paquera");
+    insertarCiudad("Playa Hermosa");
+    insertarCiudad("Tamarindo");
+    insertarCiudad("Liberia");
+    insertarCiudad("Tempisque");
+    insertarCiudad("Cabuya");
+    insertarCiudad("Isla San Lucas");
+    insertarCiudad("Tortuguero");
+    insertarCiudad("Fortuna");
+
+
+
     insertarRutas('A','C',7);
     insertarRutas('A','D',2);
     insertarRutas('E','F',3);
