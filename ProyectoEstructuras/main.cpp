@@ -101,13 +101,38 @@ int main()
 
     insertarRutas("Los Chiles Frontera","Santa Rosa",304);
     insertarRutas("Santa Rosa","Liberia",73);
-    insertarRutas('E','F',3);
-    insertarRutas('D','E',4);
-    insertarRutas('C','D',5);
-    insertarRutas('B','C',6);
-    insertarRutas('A','B',7);
-    insertarRutas('D','H',8);
-    insertarRutas('F','H',1);
+    insertarRutas("","",0);
+    insertarRutas("","",0);
+    insertarRutas("","",0);
+    insertarRutas("","",0);
+    insertarRutas("","",0);
+    insertarRutas("","",0);
+    insertarRutas("","",0);
+    insertarRutas("","",0);
+    insertarRutas("","",0);
+    insertarRutas("","",0);
+    insertarRutas("","",0);
+    insertarRutas("","",0);
+    insertarRutas("","",0);
+    insertarRutas("","",0);
+    insertarRutas("","",0);
+    insertarRutas("","",0);
+    insertarRutas("","",0);
+    insertarRutas("","",0);
+    insertarRutas("","",0);
+    insertarRutas("","",0);
+    insertarRutas("","",0);
+    insertarRutas("","",0);
+    insertarRutas("","",0);
+    insertarRutas("","",0);
+    insertarRutas("","",0);
+    insertarRutas("","",0);
+    insertarRutas("","",0);
+    insertarRutas("","",0);
+    insertarRutas("","",0);
+    insertarRutas("","",0);
+    insertarRutas("","",0);
+    insertarRutas("","",0);
 
 
     sf::RenderWindow window(sf::VideoMode(1920, 1080), "SFML works!");
