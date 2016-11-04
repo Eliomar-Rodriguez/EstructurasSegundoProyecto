@@ -1,12 +1,24 @@
 #include <SFML/Graphics.hpp>
 
+
+struct arco {
+    //char destino;
+    struct vertice *destino;
+    int distancia;
+    struct arco *sigA;
+};
+
+struct vertice{
+    char ciudad;
+    struct vertice *sigV;
+    struct arco *sigA;
+    bool visitado;
+}*grafo;
+
 int main()
 {
-    sf::RenderWindow window(sf::VideoMode(400, 400), "SFML works!");
+    sf::RenderWindow window(sf::VideoMode(1920, 1080), "SFML works!");
     sf::CircleShape shape(200.f);
-
-    //sf::CircleShape shape1(50.f);
-    //sf:Rectangle
 
     shape.setFillColor(sf::Color::Green);
     while (window.isOpen())
