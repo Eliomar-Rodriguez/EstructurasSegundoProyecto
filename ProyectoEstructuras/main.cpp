@@ -3,8 +3,7 @@
 #include<iostream>
 
 using namespace std;
-
-
+#define INF 99
 struct arco {
     //char destino[];
     struct vertice *destino;
@@ -13,7 +12,7 @@ struct arco {
 };
 
 struct vertice{
-    char ciudad[];
+    string ciudad;
     struct vertice *sigV;
     struct arco *sigA;
     bool visitado;
@@ -21,8 +20,9 @@ struct vertice{
 
 void insertarCiudad(char pciudad[]){
 
-    struct vertice *nnv = new vertice();
-    strcpy(nnv->ciudad,pciudad);
+    struct vertice *nnv = new vertice();string ciudad = pciudad;
+    nnv->ciudad = ciudad;
+    //strcpy(nnv->ciudad,ciudad);
     //nnv->ciudad=pciudad;
     nnv->visitado =false;
 
@@ -57,9 +57,85 @@ void insertarRutas(char porigen[],char pdestino[], int pdistancia){
     nna->sigA =origen->sigA;
     origen->sigA=nna;
 }
+void cargarMatAdy(){
+    int matAdy [33][33];
+    for(int x = 0; x < 33; x++){
+        for(int y = 0; y < 33; y++){
+            matAdy[x][y]=INF;
+        }
+    }
+    // el x es la ciudad de inicio y la y es el destino y el numero es la distancia entre ciudades
+    matAdy[17][11]=304; // los chiles F - santa rosa
 
+    matAdy[11][17]=304; // santa rosa - los chiles F
+    matAdy[11][27]=73;  // santa rosa - liberia
+    matAdy[11][26]=9;   // santa rosa - tamarindo
+
+    matAdy[26][11]=9;   // tamarindo - santa rosa
+    matAdy[26][27]=78;  // tamarindo - liberia
+    matAdy[26][25]=72;  // tamarindo - plata hermosa
+
+    matAdy[27][26]=78;  // liberia - tamarindo
+    matAdy[27][11]=73;  // liberia - santa rosa
+    matAdy[27][16]=58;  // liberia santa cruz
+    matAdy[27][28]=29;  // liberia tempisque
+
+    matAdy[25][6]=74;   // playa hermosa - nicoya
+    matAdy[25][29]=206; // playa hermosa - cabuya
+    matAdy[25][26]=72;  // playa hermosa - tamarindo
+
+    matAdy[6][25]=74;   // nicoya - playa hermosa
+    matAdy[6][24]=96;   // nicoya - paquera
+
+    matAdy[29][25]=206; // cabuya - playa hermosa
+    matAdy[29][24]=47;  // cabuya - paquera
+
+    matAdy[24][6]=96;   // paquera - nicoya
+    matAdy[24][29]=47;  // paquera - cabuya
+    matAdy[24][28]=150; // paquera - tempisque
+    matAdy[24][32]=105; // paquera - manzanillo
+
+    matAdy[28][24]=150; // tempisque - paquera
+    matAdy[28][27]=29;  // tempisque - liberia
+    matAdy[28][16]=85;  // tempisque - santa cruz
+
+    matAdy[16][28]=85;  // santa cruz - tempisque
+    matAdy[16][27]=58;  // santa cruz - liberia
+    matAdy[16][31]=103; // santa cruz - fortuna
+
+    matAdy[31][16]=103; // fortuna - santa cruz
+    matAdy[31][5]=52;   // fortuna - sucre
+
+    matAdy[32][2]=93;   // manzanillo - palmares
+    matAdy[32][24]=105; // manzanillo - paquera
+
+    matAdy[5][31]=52;   // sucre - fortuna
+    matAdy[5][3]=22;    // sucre - zarcero
+
+    matAdy[3][5]=22;    // zarcero - sucre
+    matAdy[3][1]=19;    // zarcero - naranjo
+
+    matAdy[][]=;
+    matAdy[][]=;
+    matAdy[][]=;
+    matAdy[][]=;
+    matAdy[][]=;
+    matAdy[][]=;
+    matAdy[][]=;
+    matAdy[][]=;
+    matAdy[][]=;
+    matAdy[][]=;
+    matAdy[][]=;
+    matAdy[][]=;
+    matAdy[][]=;
+    matAdy[][]=;
+    matAdy[][]=;
+    matAdy[][]=;
+    matAdy[][]=;
+    matAdy[][]=;
+}
 void cargarDatos(){
-    // 32 ciudades
+    // 33 ciudades
     insertarCiudad("San Jose");
     insertarCiudad("Naranjo");
     insertarCiudad("Palmares");
@@ -93,6 +169,7 @@ void cargarDatos(){
     insertarCiudad("Caño Blanco");
     insertarCiudad("Fortuna");
     insertarCiudad("Manzanillo");
+
     // insercion de los arcos en total son 46
     insertarRutas("Los Chiles Frontera","Santa Rosa",304);
 
@@ -143,7 +220,7 @@ void cargarDatos(){
 
     insertarRutas("Zarcero","Sucre",22);
     insertarRutas("Zarcero","Naranjo",19);
-
+    // falta de aqui hasta abajo
     insertarRutas("Naranjo","Zarcero",19);
     insertarRutas("Naranjo","Palmares",12);
     insertarRutas("Naranjo","Alajuela",19);
@@ -224,7 +301,7 @@ int main()
 {
     cargarDatos();
 
-    sf::RenderWindow window(sf::VideoMode(1920, 1080), "SFML works!");
+    sf::RenderWindow window(sf::VideoMode(400, 400), "SFML works!");
     sf::CircleShape shape(200.f);
 
     shape.setFillColor(sf::Color::Green);
