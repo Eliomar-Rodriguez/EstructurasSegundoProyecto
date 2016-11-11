@@ -1,11 +1,22 @@
 #include <SFML/Graphics.hpp>
 #include<string.h>
 #include<iostream>
+#include <iostream>
+#include <stdlib.h>
+#include <stdio.h>
+#include <vector>
+#include <queue>
+#include <stack>
 
 using namespace std;
 #define INF 99
+#define tamano 33 // tamano maximo de vertices
+#define nodo pair< int , int >
+string todasCiudades[40];
+int matAdy [tamano][tamano];
+int numCiudad = 0;
+
 struct arco {
-    //char destino[];
     struct vertice *destino;
     int distancia;
     struct arco *sigA;
@@ -13,21 +24,41 @@ struct arco {
 
 struct vertice{
     string ciudad;
+    int numeroCiudad;
     struct vertice *sigV;
     struct arco *sigA;
     bool visitado;
 }*grafo;
 
-void insertarCiudad(char pciudad[]){
+struct par {
+    int valorDistancia;
+    int verticeOrigen;
+};
 
-    struct vertice *nnv = new vertice();string ciudad = pciudad;
+struct cmp {
+    bool operator() ( const nodo &a , const nodo &b ) {
+        return a.second > b.second;
+    }
+};
+
+priority_queue< nodo , vector<nodo> , cmp > Q; //priority queue propia del c++, usamos el comparador definido para que el de menor valor este en el tope
+bool visitado[tamano];      //para vértices visitados
+par distancia[tamano];
+
+void insertarCiudad(char pciudad[]){
+    string ciudad = pciudad;
+    //todasCiudades[indiceCiudad]=ciudad;
+    struct vertice *nnv = new vertice();
+
     nnv->ciudad = ciudad;
     //strcpy(nnv->ciudad,ciudad);
     //nnv->ciudad=pciudad;
     nnv->visitado =false;
-
+    nnv->numeroCiudad = numCiudad;
+    numCiudad=numCiudad+1;
     nnv->sigV=grafo;
     grafo =nnv;
+
 }
 struct vertice* buscar(char pciudad[]){
     struct vertice *tempV = grafo;
@@ -35,12 +66,19 @@ struct vertice* buscar(char pciudad[]){
 
         if(tempV->ciudad==pciudad)
             return tempV;
-
         tempV=tempV->sigV;
-
     }
     return NULL;
 }
+
+void inicializar(){
+    for( int i = 0 ; i <= tamano ; ++i ){
+        distancia[ i ].valorDistancia = INF;  //inicializamos todas las distancias con valor infinito
+        distancia[ i ].verticeOrigen = INF;  //inicializamos todas las distancias con valor infinito
+        visitado[ i ] = false; //inicializamos todos los vértices como no visitados
+    }
+}
+
 void insertarRutas(char porigen[],char pdestino[], int pdistancia){
 
     struct vertice *origen =buscar (porigen);
@@ -57,82 +95,67 @@ void insertarRutas(char porigen[],char pdestino[], int pdistancia){
     nna->sigA =origen->sigA;
     origen->sigA=nna;
 }
+
 void cargarMatAdy(){
-    int matAdy [33][33];
-    for(int x = 0; x < 33; x++){
-        for(int y = 0; y < 33; y++){
+    struct vertice *tempV = grafo;
+    struct arco *tempA;
+
+    for(int x = 0; x < tamano; x++){
+        for(int y = 0; y < tamano; y++){
             matAdy[x][y]=INF;
         }
     }
-    // el x es la ciudad de inicio y la y es el destino y el numero es la distancia entre ciudades
-    matAdy[17][11]=304; // los chiles F - santa rosa
 
-    matAdy[11][17]=304; // santa rosa - los chiles F
-    matAdy[11][27]=73;  // santa rosa - liberia
-    matAdy[11][26]=9;   // santa rosa - tamarindo
+    // cargar la matriz con datos del grafo
+    while (tempV!=NULL){
+        tempA=tempV->sigA;
+        while(tempA!=NULL){
+            matAdy[tempV->numeroCiudad][tempA->destino->numeroCiudad]=tempA->distancia;
+            tempA=tempA->sigA;
+        }
+        tempV=tempV->sigV;
+    }
+}
 
-    matAdy[26][11]=9;   // tamarindo - santa rosa
-    matAdy[26][27]=78;  // tamarindo - liberia
-    matAdy[26][25]=72;  // tamarindo - plata hermosa
+void Dijkstra(int inicio){
+	inicializar();
+	int x = Q.size();
+	Q.push( nodo( inicio , 0 ) ); //Insertamos el vértice inicial en la Cola de Prioridad
+    distancia[ inicio ].valorDistancia = 0;      //Este paso es importante, inicializamos la distancia del inicial como 0
+    int actual , adyacente , peso;
+    while( !Q.empty() ){                   //Mientras cola no este vacia
+        actual = Q.top().first;            //Obtengo de la cola el nodo con menor peso, en un comienzo será el inicial
+        Q.pop();                           //Sacamos el elemento de la cola
+        if( visitado[ actual ] )
+			continue; //Si el vértice actual ya fue visitado entonces sigo sacando elementos de la cola
 
-    matAdy[27][26]=78;  // liberia - tamarindo
-    matAdy[27][11]=73;  // liberia - santa rosa
-    matAdy[27][16]=58;  // liberia santa cruz
-    matAdy[27][28]=29;  // liberia tempisque
+		visitado[ actual ] = true;         //Marco como visitado el vértice actual
 
-    matAdy[25][6]=74;   // playa hermosa - nicoya
-    matAdy[25][29]=206; // playa hermosa - cabuya
-    matAdy[25][26]=72;  // playa hermosa - tamarindo
+        for( int i = 0 ; i < tamano ; ++i ){ //reviso sus adyacentes del vertice actual
+            if(matAdy[actual][i] != INF){
+	            peso = matAdy[actual][i]  ;        //peso de la arista que une actual con adyacente ( actual , adyacente )
+	            if( !visitado[ i ] ){        //si el vertice adyacente no fue visitado
 
-    matAdy[6][25]=74;   // nicoya - playa hermosa
-    matAdy[6][24]=96;   // nicoya - paquera
+	            	if( distancia[ actual ].valorDistancia + peso < distancia[ i ].valorDistancia ){
+				        distancia[ i ].valorDistancia = distancia[ actual ].valorDistancia + peso; //relajamos el vertice actualizando la distancia
+				        distancia[ i ].verticeOrigen = actual;
+				        Q.push( nodo( i , distancia[ i ].valorDistancia ) ); //agregamos adyacente a la cola de prioridad
+    				}
+				}
+        	}
+        }
+    }
+}
 
-    matAdy[29][25]=206; // cabuya - playa hermosa
-    matAdy[29][24]=47;  // cabuya - paquera
+void imprimirMatAdy(){
 
-    matAdy[24][6]=96;   // paquera - nicoya
-    matAdy[24][29]=47;  // paquera - cabuya
-    matAdy[24][28]=150; // paquera - tempisque
-    matAdy[24][32]=105; // paquera - manzanillo
+	//int i,j;
+	for(int i=0; i< tamano; i++){
+		for(int j= 0; j < tamano; j++)
+			cout<<matAdy[i][j]<<"  ";
+		cout<<endl;
 
-    matAdy[28][24]=150; // tempisque - paquera
-    matAdy[28][27]=29;  // tempisque - liberia
-    matAdy[28][16]=85;  // tempisque - santa cruz
-
-    matAdy[16][28]=85;  // santa cruz - tempisque
-    matAdy[16][27]=58;  // santa cruz - liberia
-    matAdy[16][31]=103; // santa cruz - fortuna
-
-    matAdy[31][16]=103; // fortuna - santa cruz
-    matAdy[31][5]=52;   // fortuna - sucre
-
-    matAdy[32][2]=93;   // manzanillo - palmares
-    matAdy[32][24]=105; // manzanillo - paquera
-
-    matAdy[5][31]=52;   // sucre - fortuna
-    matAdy[5][3]=22;    // sucre - zarcero
-
-    matAdy[3][5]=22;    // zarcero - sucre
-    matAdy[3][1]=19;    // zarcero - naranjo
-
-    matAdy[][]=;
-    matAdy[][]=;
-    matAdy[][]=;
-    matAdy[][]=;
-    matAdy[][]=;
-    matAdy[][]=;
-    matAdy[][]=;
-    matAdy[][]=;
-    matAdy[][]=;
-    matAdy[][]=;
-    matAdy[][]=;
-    matAdy[][]=;
-    matAdy[][]=;
-    matAdy[][]=;
-    matAdy[][]=;
-    matAdy[][]=;
-    matAdy[][]=;
-    matAdy[][]=;
+	}
 }
 void cargarDatos(){
     // 33 ciudades
@@ -220,7 +243,7 @@ void cargarDatos(){
 
     insertarRutas("Zarcero","Sucre",22);
     insertarRutas("Zarcero","Naranjo",19);
-    // falta de aqui hasta abajo
+
     insertarRutas("Naranjo","Zarcero",19);
     insertarRutas("Naranjo","Palmares",12);
     insertarRutas("Naranjo","Alajuela",19);
@@ -299,8 +322,11 @@ void cargarDatos(){
 
 int main()
 {
-    cargarDatos();
+    cargarDatos(); // ingresa ciudades y los enlaces entre ellas
+    cargarMatAdy(); // carga el grafo en la matriz de ady con los pesos (la llena)
+    imprimirMatAdy(); // imprime la matriz de ady
 
+    Dijkstra(0);
     sf::RenderWindow window(sf::VideoMode(400, 400), "SFML works!");
     sf::CircleShape shape(200.f);
 
