@@ -9,9 +9,11 @@
 #include <stack>
 
 using namespace std;
+
 #define INF 99
-#define tamano 33 // tamano maximo de vertices
+#define tamano 33               // tamano maximo de vertices
 #define nodo pair< int , int >
+
 string todasCiudades[40];
 int matAdy [tamano][tamano];
 int numCiudad = 0;
@@ -73,8 +75,8 @@ struct vertice* buscar(char pciudad[]){
 
 void inicializar(){
     for( int i = 0 ; i <= tamano ; ++i ){
-        distancia[ i ].valorDistancia = INF;  //inicializamos todas las distancias con valor infinito
-        distancia[ i ].verticeOrigen = INF;  //inicializamos todas las distancias con valor infinito
+        distancia[ i ].valorDistancia = INF;
+        distancia[ i ].verticeOrigen = INF;
         visitado[ i ] = false; //inicializamos todos los vértices como no visitados
     }
 }
@@ -157,6 +159,7 @@ void imprimirMatAdy(){
 
 	}
 }
+
 void cargarDatos(){
     // 33 ciudades
     insertarCiudad("San Jose");
@@ -320,30 +323,131 @@ void cargarDatos(){
     insertarRutas("Talamanca","Turrialba",155);
 }
 
-int main()
-{
-    cargarDatos(); // ingresa ciudades y los enlaces entre ellas
-    cargarMatAdy(); // carga el grafo en la matriz de ady con los pesos (la llena)
-    imprimirMatAdy(); // imprime la matriz de ady
+int main(int, char const**)
+{// Create the main window
+    sf::RenderWindow window(sf::VideoMode(1410, 970), "Waze - TEC");
+    // Set the Icon
+    sf::Image icon;
+    if (!icon.loadFromFile("icon.png")) {
+        return EXIT_FAILURE;
+    }
+    window.setIcon(icon.getSize().x, icon.getSize().y, icon.getPixelsPtr());
 
-    Dijkstra(0);
-    sf::RenderWindow window(sf::VideoMode(400, 400), "SFML works!");
-    sf::CircleShape shape(200.f);
+    // Load a sprite to display
+    sf::Texture texture;
+    if (!texture.loadFromFile("fondo1.jpg")) {
+        return EXIT_FAILURE;
+    }
+    sf::Sprite sprite(texture);
+    sprite.setPosition(322,5);      /// posicion de la imagen
 
-    shape.setFillColor(sf::Color::Green);
+    // Create a graphical text to display
+    sf::Font font;
+
+    if (!font.loadFromFile("sansation.ttf")) {
+        return EXIT_FAILURE;
+    }
+    /*--------------------------------------------------------------------------------------------------*/
+
+    //int cont=0;
+    /*dentro del ciclo de la ventana lo que hay que hacer es un
+    if (cont <=listaCiudades.size()) entonces
+    sf::Text ciudad(cont.toString()+listaciudades.get(cont), font, 18);
+    ciudad.setPosition(6,tamano); donde tamano empieza en 18 y al final del ciclo de la ventana le sumo 18
+    ciudad.setFillColor(sf::Color::Black);
+
+    y se pone un solo write al final de ciudad  */
+
+    /*--------------------------------------------------------------------------------------------------*/
+    sf::Text text1("Lista de ciudades", font, 25);
+    text1.setPosition(0,0);
+    text1.setFillColor(sf::Color::Black);
+
+    sf::Text text2("1 - San Jose", font, 18); // 18 tamano fuente
+    text2.setPosition(6,40);
+    text2.setFillColor(sf::Color::Black);
+
+    sf::Text text("0 - Los Chiles Frontera", font, 18);
+    text.setPosition(6,22);
+    text.setFillColor(sf::Color::Black);
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+    sf::RectangleShape toolBar(sf::Vector2f(316,970)); /// tamano del menu donde estan las ciudades
+    toolBar.setFillColor(sf::Color(70,187,217));
+
+    /////////////////////////////////////////////////////////////
+//Dibuja el primer Grafo
+////////////////////////////////////////////////////////////
+
+    sf::CircleShape firstGraph(7);
+    firstGraph.setFillColor(sf::Color::Blue);
+    firstGraph.setPosition(543, 146);
+
+    /////////////////////////////////////////////////////////////
+//Dibuja el segundo grafo
+////////////////////////////////////////////////////////////
+
+    sf::CircleShape secondGraph(7);
+    secondGraph.setFillColor(sf::Color::Red);
+    secondGraph.setPosition(665, 190);
+
+
+/////////////////////////////////////////////////////////////
+//Dibuja la linea entre un grafo y otro.
+////////////////////////////////////////////////////////////
+
+    sf::VertexArray lines(sf::LinesStrip,2);
+    lines[0].position = sf::Vector2f(550,155);
+    lines[1].position = sf::Vector2f(672,200);
+    lines[0].color = sf::Color::Black;
+    lines[1].color = sf::Color::Black;
+
+    // Play the music
+    //music.play();
+
+
+
+    // Start the game loop
     while (window.isOpen())
     {
+        // Process events
         sf::Event event;
         while (window.pollEvent(event))
         {
-            if (event.type == sf::Event::Closed)
+            // Close window: exit
+            if (event.type == sf::Event::Closed) {
                 window.close();
+            }
+
+            // Escape pressed: exit
+            if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape) {
+                window.close();
+            }
         }
 
-        window.clear();
-        window.draw(shape);
+        // Clear screen
+        window.clear(sf::Color(153,217,234));
+
+        // Draw the sprite
+        window.draw(sprite);
+
+        window.draw(toolBar);
+
+        window.draw(firstGraph);
+        window.draw(secondGraph);
+
+        window.draw(lines);
+
+
+
+        // Draw the string
+        window.draw(text);
+        window.draw(text1);
+        window.draw(text2);
+
+        // Update the window
         window.display();
     }
 
-    return 0;
+    return EXIT_SUCCESS;
 }
