@@ -150,16 +150,36 @@ void Dijkstra(int inicio){
     }
 }
 
-void imprimirMatAdy(){
+void imprimirRutaCorta(int destino){
+    int dest = destino-1;
+    stack<int> pila;
+    int dist=distancia[dest].valorDistancia;
+    while(dest != INF)
+    {
+        pila.push(dest);
+        dest= distancia[dest].verticeOrigen;
+    }
 
-	//int i,j;
+    cout <<endl<< "Ruta mas corta para llegar a " << destino << " desde el vertice inicial es:" << endl;
+    while(pila.size()!=0)
+    {
+        cout << pila.top()+1 ;
+        pila.pop();
+        if (pila.size() != 0)
+            cout << " - ";
+    }
+    cout << endl;
+    cout << "Distancia total de la ruta: " << dist << endl;
+}
+
+void imprimirMatAdy(){
 	for(int i=0; i< tamano; i++){
 		for(int j= 0; j < tamano; j++)
 			cout<<matAdy[i][j]<<"    ";
 		cout<<endl;
-
 	}
 }
+
 void crearCiudades(){
     // 33 ciudades
     insertarCiudad("San Jose");
@@ -196,6 +216,7 @@ void crearCiudades(){
     insertarCiudad("Fortuna");
     insertarCiudad("Manzanillo");
 }
+
 void enlazarCiudades()
 {
     // insercion de los arcos en total son 46
@@ -329,6 +350,13 @@ int main(int, char const**)
 {
     crearCiudades();
     enlazarCiudades();
+    cargarMatAdy();
+
+    imprimirMatAdy();
+    Dijkstra(5);
+    imprimirRutaCorta(13);
+
+
     // Create the main window
     sf::RenderWindow window(sf::VideoMode(1410, 970), "Waze - TEC");
 
