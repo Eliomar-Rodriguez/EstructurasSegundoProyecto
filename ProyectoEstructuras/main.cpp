@@ -7,17 +7,19 @@
 #include <vector>
 #include <queue>
 #include <stack>
+#include<string>
 
 using namespace std;
 
 #define INF 99
 #define tamano 33               // tamano maximo de vertices
-#define nodo pair< int , int >
+#define nodo pair < int,int >
 
 string todasCiudades[40];
 int matAdy [tamano][tamano];
 int numCiudad = 0;
-
+int contador =0;
+int tamanoFuente = 18;
 struct arco {
     struct vertice *destino;
     int distancia;
@@ -33,10 +35,12 @@ struct vertice{
     bool visitado;
 }*grafo;
 
+
 struct par {
     int valorDistancia;
     int verticeOrigen;
 };
+
 
 struct cmp {
     bool operator() ( const nodo &a , const nodo &b ) {
@@ -65,13 +69,13 @@ void insertarCiudad(char pciudad[], int x,int y){
 struct vertice* buscar(char pciudad[]){
     struct vertice *tempV = grafo;
     while(tempV!=NULL){
-
         if(tempV->ciudad==pciudad)
             return tempV;
         tempV=tempV->sigV;
     }
     return NULL;
 }
+
 
 void inicializar(){
     for( int i = 0 ; i <= tamano ; ++i ){
@@ -80,6 +84,7 @@ void inicializar(){
         visitado[ i ] = false; //inicializamos todos los vértices como no visitados
     }
 }
+
 
 void insertarRutas(char porigen[],char pdestino[], int pdistancia){
 
@@ -98,6 +103,7 @@ void insertarRutas(char porigen[],char pdestino[], int pdistancia){
 
     origen->sigA=nna;
 }
+
 
 void cargarMatAdy(){
     struct vertice *tempV = grafo;
@@ -123,10 +129,12 @@ void cargarMatAdy(){
 void Dijkstra(int inicio){
 	inicializar();
 	int x = Q.size();
-	Q.push( nodo( inicio , 0 ) ); //Insertamos el vértice inicial en la Cola de Prioridad
+	Q.push( nodo(inicio,0)); //Insertamos el vértice inicial en la Cola de Prioridad
+
     distancia[ inicio ].valorDistancia = 0;      //Este paso es importante, inicializamos la distancia del inicial como 0
     int actual , adyacente , peso;
     while( !Q.empty() ){                   //Mientras cola no este vacia
+
         actual = Q.top().first;            //Obtengo de la cola el nodo con menor peso, en un comienzo será el inicial
         Q.pop();                           //Sacamos el elemento de la cola
         if( visitado[ actual ] )
@@ -199,22 +207,22 @@ void crearCiudades(){
     insertarCiudad("Talamanca",1040,525);
     insertarCiudad("Sixaola",1361,516);
     insertarCiudad("Santa Cruz",442,280);
-    insertarCiudad("Los Chiles Frontera");
-    insertarCiudad("Cartago");
-    insertarCiudad("Turrialba");
-    insertarCiudad("Jaco");
-    insertarCiudad("Quepos");
-    insertarCiudad("Golfito");
-    insertarCiudad("Parrita");
-    insertarCiudad("Paquera");
-    insertarCiudad("Playa Hermosa");
-    insertarCiudad("Tamarindo");
-    insertarCiudad("Liberia");
-    insertarCiudad("Tempisque");
-    insertarCiudad("Cabuya");
-    insertarCiudad("Caño Blanco");
-    insertarCiudad("Fortuna");
-    insertarCiudad("Manzanillo");
+    insertarCiudad("Los Chiles Frontera",720,77);
+    insertarCiudad("Cartago",970,419);
+    insertarCiudad("Turrialba",1041,393);
+    insertarCiudad("Jaco",747,487);
+    insertarCiudad("Quepos",888,538);
+    insertarCiudad("Golfito",1212,791);
+    insertarCiudad("Parrita",837,517);
+    insertarCiudad("Paquera",643,427);
+    insertarCiudad("Playa Hermosa",408,202);
+    insertarCiudad("Tamarindo",368,286);
+    insertarCiudad("Liberia",480,183);
+    insertarCiudad("Tempisque",473,135);
+    insertarCiudad("Cabuya",591,480);
+    insertarCiudad("Caño Blanco",1156,328);
+    insertarCiudad("Fortuna",739,237);
+    insertarCiudad("Manzanillo",569,464);
 }
 
 void enlazarCiudades()
@@ -348,6 +356,7 @@ void enlazarCiudades()
 
 int main(int, char const**)
 {
+    struct vertice * tempV = grafo;
     crearCiudades();
     enlazarCiudades();
     cargarMatAdy();
@@ -414,28 +423,28 @@ int main(int, char const**)
 //Dibuja el primer Grafo (el circulo)
 ////////////////////////////////////////////////////////////
 
-    sf::CircleShape firstGraph(7); // el 7 es el tamano de los vertices en pantalla
+    /*sf::CircleShape firstGraph(7); // el 7 es el tamano de los vertices en pantalla
     firstGraph.setFillColor(sf::Color::Blue);
     firstGraph.setPosition(811, 344); // ubicacion en pantalla
-
+*/
     /////////////////////////////////////////////////////////////
 //Dibuja el segundo grafo (el circulo)
 ////////////////////////////////////////////////////////////
 
-    sf::CircleShape secondGraph(7);
+    /*sf::CircleShape secondGraph(7);
     secondGraph.setFillColor(sf::Color::Red);
-    secondGraph.setPosition(793, 350);
+    secondGraph.setPosition(793, 350);*/
 
 
 /////////////////////////////////////////////////////////////
 //Dibuja la linea entre un grafo y otro.
 ////////////////////////////////////////////////////////////
 
-    sf::VertexArray lines(sf::LinesStrip,2);
+    /*sf::VertexArray lines(sf::LinesStrip,2);
     lines[0].position = sf::Vector2f(799,356);
     lines[1].position = sf::Vector2f(817,350);
     lines[0].color = sf::Color::Black;
-    lines[1].color = sf::Color::Black;
+    lines[1].color = sf::Color::Black;*/
 
     // Start the game loop
     while (window.isOpen())
@@ -455,6 +464,16 @@ int main(int, char const**)
             }
         }
 
+        if (contador <=32){
+
+            sf::Text ciudad(tempV->ciudad, font, 18);
+            ciudad.setPosition(6,tamanoFuente); //donde tamano empieza en 18 y al final del ciclo de la ventana le sumo 18
+            ciudad.setFillColor(sf::Color::Black);
+            contador++;
+            window.draw(ciudad);
+            tamanoFuente += 18;
+        }
+
         // Clear screen
         window.clear(sf::Color(153,217,234));
 
@@ -463,21 +482,23 @@ int main(int, char const**)
 
         window.draw(toolBar);
 
-        window.draw(firstGraph);
-        window.draw(secondGraph);
+        //window.draw(firstGraph);
+        //window.draw(secondGraph);
 
-        window.draw(lines);
+        //window.draw(lines);
 
         // este draw solo se hace una vez
 
         // Draw the string
-        window.draw(text);
         window.draw(text1);
-        window.draw(text2);
+        window.draw(text);
+        window.draw(text2 );
 
         // Update the window
         window.display();
         //cont++; // futuro contador para escribir todas las ciudades
+
+        tempV = tempV ->sigV;
     }
 
     return EXIT_SUCCESS;
