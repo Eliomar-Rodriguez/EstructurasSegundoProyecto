@@ -19,7 +19,7 @@ string todasCiudades[40];
 int matAdy [tamano][tamano];
 int numCiudad = 0;
 int contador =0;
-int tamanoFuente = 18;
+int tamanoFuente = 38;
 struct arco {
     struct vertice *destino;
     int distancia;
@@ -33,7 +33,7 @@ struct vertice{
     struct vertice *sigV;
     struct arco *sigA;
     bool visitado;
-}*grafo;
+}*grafo,*ini;
 
 
 struct par {
@@ -356,7 +356,8 @@ void enlazarCiudades()
 
 int main(int, char const**)
 {
-    struct vertice * tempV = grafo;
+    //sf::Text ciudades[];
+
     crearCiudades();
     enlazarCiudades();
     cargarMatAdy();
@@ -364,6 +365,7 @@ int main(int, char const**)
     imprimirMatAdy();
     Dijkstra(5);
     imprimirRutaCorta(13);
+    struct vertice * tempV = ini;
 
 
     // Create the main window
@@ -403,13 +405,12 @@ int main(int, char const**)
 
     /*--------------------------------------------------------------------------------------------------*/
 
-    sf::Text text1("Lista de ciudades", font, 25);
-    text1.setPosition(2,0);
-    text1.setFillColor(sf::Color::Black);
+    sf::Text titulo("Lista de ciudades", font, 25);
+    titulo.setPosition(2,0);
+    titulo.setFillColor(sf::Color::Black);
+    //text1.Bold;
 
-    sf::Text text("0 - Los Chiles Frontera", font, 18);
-    text.setPosition(9,38);
-    text.setFillColor(sf::Color::Black);
+    sf::Text ciudad("",font,0);
 
     sf::Text text2("1 - San Jose", font, 18); // 18 tamano fuente
     text2.setPosition(9,58);
@@ -440,15 +441,20 @@ int main(int, char const**)
 //Dibuja la linea entre un grafo y otro.
 ////////////////////////////////////////////////////////////
 
-    /*sf::VertexArray lines(sf::LinesStrip,2);
+    sf::VertexArray lines(sf::LinesStrip,2);
     lines[0].position = sf::Vector2f(799,356);
     lines[1].position = sf::Vector2f(817,350);
     lines[0].color = sf::Color::Black;
-    lines[1].color = sf::Color::Black;*/
+    lines[1].color = sf::Color::Black;
+
 
     // Start the game loop
     while (window.isOpen())
     {
+        string hola = "numero";
+        hola = hola + contador;
+        contador++;
+        cout<<hola<<endl;
         // Process events
         sf::Event event;
         while (window.pollEvent(event))
@@ -463,15 +469,29 @@ int main(int, char const**)
                 window.close();
             }
         }
-
-        if (contador <=32){
+        /*if(contador <33){
 
             sf::Text ciudad(tempV->ciudad, font, 18);
             ciudad.setPosition(6,tamanoFuente); //donde tamano empieza en 18 y al final del ciclo de la ventana le sumo 18
             ciudad.setFillColor(sf::Color::Black);
             contador++;
             window.draw(ciudad);
-            tamanoFuente += 18;
+            tamanoFuente += 20;
+            //..add(ciudad);
+            tempV = tempV ->sigV;
+        }*/
+
+        if (!tempV==NULL){
+            ciudad.setFillColor(sf::Color::Black);
+            ciudad.setCharacterSize(18);
+            //ciudad.setFont(font);
+            ciudad.setPosition(9,tamanoFuente);
+            ciudad.setString(tempV->ciudad);
+
+            tempV = tempV ->sigV;
+            tamanoFuente += 20;
+
+            window.draw(ciudad);
         }
 
         // Clear screen
@@ -482,23 +502,19 @@ int main(int, char const**)
 
         window.draw(toolBar);
 
-        //window.draw(firstGraph);
-        //window.draw(secondGraph);
-
         //window.draw(lines);
 
         // este draw solo se hace una vez
 
         // Draw the string
-        window.draw(text1);
-        window.draw(text);
-        window.draw(text2 );
+        window.draw(titulo);
+
 
         // Update the window
         window.display();
         //cont++; // futuro contador para escribir todas las ciudades
 
-        tempV = tempV ->sigV;
+
     }
 
     return EXIT_SUCCESS;
