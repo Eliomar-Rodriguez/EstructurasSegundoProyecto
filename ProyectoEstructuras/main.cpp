@@ -12,7 +12,7 @@ using namespace std;
 
 #define INF 99
 #define tamano 33               // tamano maximo de vertices
-#define nodo pair < pair<int,int> , pair<int,int> >
+//#define nodo pair < pair<int,int> , pair<int,int> >
 
 string todasCiudades[40];
 int matAdy [tamano][tamano];
@@ -50,7 +50,7 @@ priority_queue< nodo , vector<nodo> , cmp > Q; //priority queue propia del c++, 
 bool visitado[tamano];      //para vértices visitados
 par distancia[tamano];
 
-void insertarCiudad(char pciudad[]){
+void insertarCiudad(char pciudad[], int x,int y){
     string ciudad = pciudad;
     struct vertice *nnv = new vertice();
 
@@ -59,8 +59,8 @@ void insertarCiudad(char pciudad[]){
     nnv->numeroCiudad = numCiudad;
     numCiudad=numCiudad+1;
     nnv->sigV=grafo;
-//    nnv->x = x;
-    //nnv->y = y;
+    nnv->x = x;
+    nnv->y = y;
     grafo =nnv;
 
 }
@@ -127,11 +127,13 @@ void cargarMatAdy(){
 void Dijkstra(int inicio){
 	inicializar();
 	int x = Q.size();
-	Q.push( nodo( make_pair(inicio,0),make_pair(inicio, 0))); //Insertamos el vértice inicial en la Cola de Prioridad
+	//Q.push( nodo( make_pair(inicio,0),make_pair(inicio, 0))); //Insertamos el vértice inicial en la Cola de Prioridad
+
     distancia[ inicio ].valorDistancia = 0;      //Este paso es importante, inicializamos la distancia del inicial como 0
     int actual , adyacente , peso;
     while( !Q.empty() ){                   //Mientras cola no este vacia
-        actual = Q.top().first.first;            //Obtengo de la cola el nodo con menor peso, en un comienzo será el inicial
+
+        //actual = Q.top().first.first;            //Obtengo de la cola el nodo con menor peso, en un comienzo será el inicial
         Q.pop();                           //Sacamos el elemento de la cola
         if( visitado[ actual ] )
 			continue; //Si el vértice actual ya fue visitado entonces sigo sacando elementos de la cola
@@ -154,23 +156,43 @@ void Dijkstra(int inicio){
     }
 }
 
-void imprimirMatAdy(){
+void imprimirRutaCorta(int destino){
+    int dest = destino-1;
+    stack<int> pila;
+    int dist=distancia[dest].valorDistancia;
+    while(dest != INF)
+    {
+        pila.push(dest);
+        dest= distancia[dest].verticeOrigen;
+    }
 
-	//int i,j;
+    cout <<endl<< "Ruta mas corta para llegar a " << destino << " desde el vertice inicial es:" << endl;
+    while(pila.size()!=0)
+    {
+        cout << pila.top()+1 ;
+        pila.pop();
+        if (pila.size() != 0)
+            cout << " - ";
+    }
+    cout << endl;
+    cout << "Distancia total de la ruta: " << dist << endl;
+}
+
+void imprimirMatAdy(){
 	for(int i=0; i< tamano; i++){
 		for(int j= 0; j < tamano; j++)
 			cout<<matAdy[i][j]<<"    ";
 		cout<<endl;
-
 	}
 }
+
 void crearCiudades(){
     // 33 ciudades
-    insertarCiudad("San Jose");
-    insertarCiudad("Naranjo");
-    insertarCiudad("Palmares");
-    insertarCiudad("Zarcero");
-    insertarCiudad("Alajuela");
+    insertarCiudad("San Jose",902,404);
+    insertarCiudad("Naranjo",811,344);
+    insertarCiudad("Palmares",793,350);
+    insertarCiudad("Zarcero",807,305);
+    insertarCiudad("Alajuela",);
     insertarCiudad("Sucre");
     insertarCiudad("Nicoya");
     insertarCiudad("Ciudad Neily");
@@ -183,23 +205,24 @@ void crearCiudades(){
     insertarCiudad("Talamanca");
     insertarCiudad("Sixaola");
     insertarCiudad("Santa Cruz");
-    insertarCiudad("Los Chiles Frontera");
-    insertarCiudad("Cartago");
-    insertarCiudad("Turrialba");
-    insertarCiudad("Jaco");
-    insertarCiudad("Quepos");
-    insertarCiudad("Golfito");
-    insertarCiudad("Parrita");
-    insertarCiudad("Paquera");
-    insertarCiudad("Playa Hermosa");
-    insertarCiudad("Tamarindo");
-    insertarCiudad("Liberia");
-    insertarCiudad("Tempisque");
-    insertarCiudad("Cabuya");
-    insertarCiudad("Caño Blanco");
-    insertarCiudad("Fortuna");
-    insertarCiudad("Manzanillo");
+    insertarCiudad("Los Chiles Frontera",720,77);
+    insertarCiudad("Cartago",970,419);
+    insertarCiudad("Turrialba",1041,393);
+    insertarCiudad("Jaco",747,487);
+    insertarCiudad("Quepos",888,538);
+    insertarCiudad("Golfito",1212,791);
+    insertarCiudad("Parrita",837,517);
+    insertarCiudad("Paquera",643,427);
+    insertarCiudad("Playa Hermosa",408,202);
+    insertarCiudad("Tamarindo",368,286);
+    insertarCiudad("Liberia",480,183);
+    insertarCiudad("Tempisque",473,135);
+    insertarCiudad("Cabuya",591,480);
+    insertarCiudad("Caño Blanco",1156,328);
+    insertarCiudad("Fortuna",739,237);
+    insertarCiudad("Manzanillo",569,464);
 }
+
 void enlazarCiudades()
 {
     // insercion de los arcos en total son 46
@@ -333,6 +356,13 @@ int main(int, char const**)
 {
     crearCiudades();
     enlazarCiudades();
+    cargarMatAdy();
+
+    imprimirMatAdy();
+    Dijkstra(5);
+    imprimirRutaCorta(13);
+
+
     // Create the main window
     sf::RenderWindow window(sf::VideoMode(1410, 970), "Waze - TEC");
 
