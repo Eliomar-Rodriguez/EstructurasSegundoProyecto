@@ -26,7 +26,8 @@ struct arco {
 
 struct vertice{
     string ciudad;
-    int numeroCiudad;
+    int numeroCiudad;  // cada ciudad tiene un numero de 0 a 32
+    int x,y;
     struct vertice *sigV;
     struct arco *sigA;
     bool visitado;
@@ -49,16 +50,15 @@ par distancia[tamano];
 
 void insertarCiudad(char pciudad[]){
     string ciudad = pciudad;
-    //todasCiudades[indiceCiudad]=ciudad;
     struct vertice *nnv = new vertice();
 
     nnv->ciudad = ciudad;
-    //strcpy(nnv->ciudad,ciudad);
-    //nnv->ciudad=pciudad;
     nnv->visitado =false;
     nnv->numeroCiudad = numCiudad;
     numCiudad=numCiudad+1;
     nnv->sigV=grafo;
+//    nnv->x = x;
+    //nnv->y = y;
     grafo =nnv;
 
 }
@@ -95,6 +95,7 @@ void insertarRutas(char porigen[],char pdestino[], int pdistancia){
     nna->distancia=pdistancia;
 
     nna->sigA =origen->sigA;
+
     origen->sigA=nna;
 }
 
@@ -112,8 +113,8 @@ void cargarMatAdy(){
     while (tempV!=NULL){
         tempA=tempV->sigA;
         while(tempA!=NULL){
-            matAdy[tempV->numeroCiudad][tempA->destino->numeroCiudad]=tempA->distancia;
-            tempA=tempA->sigA;
+            matAdy[tempV -> numeroCiudad][tempA -> destino -> numeroCiudad] = tempA -> distancia; // relaciona respecto a las posiciones de la matriz las ciudades ya que cada ciudad tiene un numero
+            tempA = tempA -> sigA;
         }
         tempV=tempV->sigV;
     }
@@ -154,13 +155,12 @@ void imprimirMatAdy(){
 	//int i,j;
 	for(int i=0; i< tamano; i++){
 		for(int j= 0; j < tamano; j++)
-			cout<<matAdy[i][j]<<"  ";
+			cout<<matAdy[i][j]<<"    ";
 		cout<<endl;
 
 	}
 }
-
-void cargarDatos(){
+void crearCiudades(){
     // 33 ciudades
     insertarCiudad("San Jose");
     insertarCiudad("Naranjo");
@@ -169,7 +169,7 @@ void cargarDatos(){
     insertarCiudad("Alajuela");
     insertarCiudad("Sucre");
     insertarCiudad("Nicoya");
-    insertarCiudad("Ciudad Neilly");
+    insertarCiudad("Ciudad Neily");
     insertarCiudad("Perez Zeledon");
     insertarCiudad("Limon");
     insertarCiudad("Guapiles");
@@ -195,7 +195,9 @@ void cargarDatos(){
     insertarCiudad("Caño Blanco");
     insertarCiudad("Fortuna");
     insertarCiudad("Manzanillo");
-
+}
+void enlazarCiudades()
+{
     // insercion de los arcos en total son 46
     insertarRutas("Los Chiles Frontera","Santa Rosa",304);
 
@@ -268,7 +270,7 @@ void cargarDatos(){
 
     insertarRutas("Golfito","Quepos",179);
     insertarRutas("Golfito","Perez Zeledon",193);
-    insertarRutas("Golfito","Ciudad Neilly",31);
+    insertarRutas("Golfito","Ciudad Neily",31);
 
     insertarRutas("Alajuela","Naranjo",19);
     insertarRutas("Alajuela","San Jose",19);
@@ -294,11 +296,11 @@ void cargarDatos(){
 
     insertarRutas("Perez Zeledon","Quepos",87);
     insertarRutas("Perez Zeledon","Golfito",193);
-    insertarRutas("Perez Zeledon","Ciudad Neilly",194);
+    insertarRutas("Perez Zeledon","Ciudad Neily",194);
     insertarRutas("Perez Zeledon","Cartago",124);
 
-    insertarRutas("Ciudad Neilly","Golfito",31);
-    insertarRutas("Ciudad Neilly","Perez Zeledon",194);
+    insertarRutas("Ciudad Neily","Golfito",31);
+    insertarRutas("Ciudad Neily","Perez Zeledon",194);
 
     insertarRutas("Turrialba","Cartago",66);
     insertarRutas("Turrialba","Talamanca",155);
@@ -324,8 +326,12 @@ void cargarDatos(){
 }
 
 int main(int, char const**)
-{// Create the main window
+{
+    crearCiudades();
+    enlazarCiudades();
+    // Create the main window
     sf::RenderWindow window(sf::VideoMode(1410, 970), "Waze - TEC");
+
     // Set the Icon
     sf::Image icon;
     if (!icon.loadFromFile("icon.png")) {
@@ -339,12 +345,12 @@ int main(int, char const**)
         return EXIT_FAILURE;
     }
     sf::Sprite sprite(texture);
-    sprite.setPosition(322,5);      /// posicion de la imagen
+    sprite.setPosition(322,5);      // image position
 
     // Create a graphical text to display
     sf::Font font;
 
-    if (!font.loadFromFile("sansation.ttf")) {
+    if (!font.loadFromFile("pala.ttf")) {
         return EXIT_FAILURE;
     }
     /*--------------------------------------------------------------------------------------------------*/
@@ -359,37 +365,38 @@ int main(int, char const**)
     y se pone un solo write al final de ciudad  */
 
     /*--------------------------------------------------------------------------------------------------*/
+
     sf::Text text1("Lista de ciudades", font, 25);
-    text1.setPosition(0,0);
+    text1.setPosition(2,0);
     text1.setFillColor(sf::Color::Black);
 
-    sf::Text text2("1 - San Jose", font, 18); // 18 tamano fuente
-    text2.setPosition(6,40);
-    text2.setFillColor(sf::Color::Black);
-
     sf::Text text("0 - Los Chiles Frontera", font, 18);
-    text.setPosition(6,22);
+    text.setPosition(9,38);
     text.setFillColor(sf::Color::Black);
+
+    sf::Text text2("1 - San Jose", font, 18); // 18 tamano fuente
+    text2.setPosition(9,58);
+    text2.setFillColor(sf::Color::Black);
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////
     sf::RectangleShape toolBar(sf::Vector2f(316,970)); /// tamano del menu donde estan las ciudades
     toolBar.setFillColor(sf::Color(70,187,217));
 
     /////////////////////////////////////////////////////////////
-//Dibuja el primer Grafo
+//Dibuja el primer Grafo (el circulo)
 ////////////////////////////////////////////////////////////
 
-    sf::CircleShape firstGraph(7);
+    sf::CircleShape firstGraph(7); // el 7 es el tamano de los vertices en pantalla
     firstGraph.setFillColor(sf::Color::Blue);
-    firstGraph.setPosition(543, 146);
+    firstGraph.setPosition(811, 344); // ubicacion en pantalla
 
     /////////////////////////////////////////////////////////////
-//Dibuja el segundo grafo
+//Dibuja el segundo grafo (el circulo)
 ////////////////////////////////////////////////////////////
 
     sf::CircleShape secondGraph(7);
     secondGraph.setFillColor(sf::Color::Red);
-    secondGraph.setPosition(665, 190);
+    secondGraph.setPosition(793, 350);
 
 
 /////////////////////////////////////////////////////////////
@@ -397,15 +404,10 @@ int main(int, char const**)
 ////////////////////////////////////////////////////////////
 
     sf::VertexArray lines(sf::LinesStrip,2);
-    lines[0].position = sf::Vector2f(550,155);
-    lines[1].position = sf::Vector2f(672,200);
+    lines[0].position = sf::Vector2f(799,356);
+    lines[1].position = sf::Vector2f(817,350);
     lines[0].color = sf::Color::Black;
     lines[1].color = sf::Color::Black;
-
-    // Play the music
-    //music.play();
-
-
 
     // Start the game loop
     while (window.isOpen())
@@ -438,7 +440,7 @@ int main(int, char const**)
 
         window.draw(lines);
 
-
+        // este draw solo se hace una vez
 
         // Draw the string
         window.draw(text);
@@ -447,6 +449,7 @@ int main(int, char const**)
 
         // Update the window
         window.display();
+        //cont++; // futuro contador para escribir todas las ciudades
     }
 
     return EXIT_SUCCESS;
