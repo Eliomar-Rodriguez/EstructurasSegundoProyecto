@@ -389,17 +389,27 @@
 	<string>
 	<vector>
 
-<<<<<<< HEAD
+1470642834 D
+
 1478137051 source:c:\users\steven\estructurassegundoproyecto\proyectoestructuras\main.cpp
 	<SFML/Graphics.hpp>
 
 1478137054 c:\users\steven\estructurassegundoproyecto\sfml-2.4.0\include\sfml\graphics.hpp
-=======
-1478121461 source:c:\users\usuario\desktop\segundaprograestructuras\proyectoestructuras\main.cpp
+
+1479103788 source:c:\users\usuario\desktop\segundaprograestructuras\proyectoestructuras\main.cpp
 	<SFML/Graphics.hpp>
+	<string.h>
+	<iostream>
+	<iostream>
+	<stdlib.h>
+	<stdio.h>
+	<vector>
+	<queue>
+	<stack>
 
 1470642834 c:\users\usuario\desktop\segundaprograestructuras\sfml-2.4.0\include\sfml\graphics.hpp
->>>>>>> cb69b025a2f3884aad0ff63b8a8eab6e759a1471
+
+1470642834 9b025a2f3884aad0ff63b8a8eab6e759a1471
 	<SFML/Window.hpp>
 	<SFML/Graphics/BlendMode.hpp>
 	<SFML/Graphics/CircleShape.hpp>
@@ -426,12 +436,6 @@
 	<SFML/Graphics/Vertex.hpp>
 	<SFML/Graphics/VertexArray.hpp>
 	<SFML/Graphics/View.hpp>
-
-<<<<<<< HEAD
-1478137054 c:\users\steven\estructurassegundoproyecto\sfml-2.4.0\include\sfml\window.hpp
-=======
-1470642834 c:\users\usuario\desktop\segundaprograestructuras\sfml-2.4.0\include\sfml\window.hpp
->>>>>>> cb69b025a2f3884aad0ff63b8a8eab6e759a1471
 	<SFML/System.hpp>
 	<SFML/Window/Context.hpp>
 	<SFML/Window/ContextSettings.hpp>
@@ -445,12 +449,6 @@
 	<SFML/Window/Window.hpp>
 	<SFML/Window/WindowHandle.hpp>
 	<SFML/Window/WindowStyle.hpp>
-
-<<<<<<< HEAD
-1478137054 c:\users\steven\estructurassegundoproyecto\sfml-2.4.0\include\sfml\system.hpp
-=======
-1470642834 c:\users\usuario\desktop\segundaprograestructuras\sfml-2.4.0\include\sfml\system.hpp
->>>>>>> cb69b025a2f3884aad0ff63b8a8eab6e759a1471
 	<SFML/Config.hpp>
 	<SFML/System/Clock.hpp>
 	<SFML/System/Err.hpp>
@@ -469,8 +467,158 @@
 	<SFML/System/Utf.hpp>
 	<SFML/System/Vector2.hpp>
 	<SFML/System/Vector3.hpp>
+	<SFML/Config.hpp>
+	<SFML/System/Export.hpp>
+	<SFML/System/InputStream.hpp>
+	<SFML/System/NonCopyable.hpp>
+	<cstdio>
+	<string>
+	<SFML/Config.hpp>
+	<SFML/System/InputStream.hpp>
+	<SFML/System/Export.hpp>
+	<cstdlib>
+	<SFML/System/Export.hpp>
+	<SFML/System/Utf.hpp>
+	<iterator>
+	<locale>
+	<string>
+	<SFML/System/String.inl>
+	<SFML/Config.hpp>
+	<algorithm>
+	<locale>
+	<string>
+	<cstdlib>
+	<SFML/System/Utf.inl>
+	<SFML/System/Export.hpp>
+	<SFML/System/NonCopyable.hpp>
+	<cstdlib>
+	<SFML/System/Thread.inl>
+	<SFML/System/Export.hpp>
+	<SFML/System/NonCopyable.hpp>
+	<cstdlib>
+	<SFML/Window/Export.hpp>
+	<SFML/Window/GlResource.hpp>
+	<SFML/Window/ContextSettings.hpp>
+	<SFML/System/NonCopyable.hpp>
+	<SFML/Config.hpp>
+	<SFML/Window/Joystick.hpp>
+	<SFML/Window/Keyboard.hpp>
+	<SFML/Window/Mouse.hpp>
+	<SFML/Window/Sensor.hpp>
+	<SFML/Window/Export.hpp>
+	<SFML/System/Vector3.hpp>
+	<SFML/System/Time.hpp>
+	<SFML/Window/Export.hpp>
+	<SFML/Window/ContextSettings.hpp>
+	<SFML/Window/VideoMode.hpp>
+	<SFML/Window/WindowHandle.hpp>
+	<SFML/Window/WindowStyle.hpp>
+	<SFML/Window/GlResource.hpp>
+	<SFML/System/Clock.hpp>
+	<SFML/System/Vector2.hpp>
+	<SFML/System/NonCopyable.hpp>
+	<SFML/System/String.hpp>
+	<SFML/Graphics/Export.hpp>
+	<SFML/Graphics/Drawable.hpp>
+	<SFML/Graphics/Transformable.hpp>
+	<SFML/Graphics/VertexArray.hpp>
+	<SFML/System/Vector2.hpp>
+	<SFML/Graphics/Export.hpp>
+	<SFML/Graphics/BlendMode.hpp>
+	<SFML/Graphics/Transform.hpp>
+	<SFML/Graphics/Export.hpp>
+	<SFML/Graphics/Rect.hpp>
+	<SFML/System/Vector2.hpp>
+	<SFML/System/Vector2.hpp>
+	<algorithm>
+	<SFML/Graphics/Rect.inl>
+	<SFML/Graphics/Export.hpp>
+	<SFML/Graphics/Vertex.hpp>
+	<SFML/Graphics/PrimitiveType.hpp>
+	<SFML/Graphics/Rect.hpp>
+	<SFML/Graphics/Drawable.hpp>
+	<vector>
+	<SFML/Graphics/Export.hpp>
+	<SFML/Graphics/Color.hpp>
+	<SFML/System/Vector2.hpp>
+	<SFML/Graphics/Export.hpp>
+	<SFML/Graphics/Shape.hpp>
+	<vector>
+	<SFML/Graphics/Export.hpp>
+	<SFML/Graphics/Glyph.hpp>
+	<SFML/Graphics/Texture.hpp>
+	<SFML/Graphics/Rect.hpp>
+	<SFML/System/Vector2.hpp>
+	<SFML/System/String.hpp>
+	<map>
+	<string>
+	<vector>
+	<SFML/Graphics/Export.hpp>
+	<SFML/Graphics/Image.hpp>
+	<SFML/Window/GlResource.hpp>
+	<SFML/Graphics/Export.hpp>
+	<SFML/Graphics/Color.hpp>
+	<SFML/Graphics/Rect.hpp>
+	<string>
+	<vector>
+	<SFML/Graphics/Export.hpp>
+	<SFML/Graphics/Color.hpp>
+	<SFML/Graphics/Rect.hpp>
+	<SFML/Graphics/View.hpp>
+	<SFML/Graphics/Transform.hpp>
+	<SFML/Graphics/BlendMode.hpp>
+	<SFML/Graphics/RenderStates.hpp>
+	<SFML/Graphics/PrimitiveType.hpp>
+	<SFML/Graphics/Vertex.hpp>
+	<SFML/System/NonCopyable.hpp>
+	<SFML/Graphics/Export.hpp>
+	<SFML/Graphics/Rect.hpp>
+	<SFML/Graphics/Transform.hpp>
+	<SFML/System/Vector2.hpp>
+	<SFML/Graphics/Export.hpp>
+	<SFML/Graphics/Texture.hpp>
+	<SFML/Graphics/RenderTarget.hpp>
+	<SFML/Graphics/Export.hpp>
+	<SFML/Graphics/RenderTarget.hpp>
+	<SFML/Graphics/Image.hpp>
+	<SFML/Window/Window.hpp>
+	<string>
+	<SFML/Graphics/Export.hpp>
+	<SFML/Graphics/Glsl.hpp>
+	<SFML/Window/GlResource.hpp>
+	<SFML/System/NonCopyable.hpp>
+	<SFML/System/Vector2.hpp>
+	<SFML/System/Vector3.hpp>
+	<map>
+	<string>
+	<SFML/Graphics/Transform.hpp>
+	<SFML/Graphics/Color.hpp>
+	<SFML/System/Vector2.hpp>
+	<SFML/System/Vector3.hpp>
+	<SFML/Graphics/Glsl.inl>
+	<SFML/Graphics/Export.hpp>
+	<SFML/Graphics/Drawable.hpp>
+	<SFML/Graphics/Transformable.hpp>
+	<SFML/Graphics/Vertex.hpp>
+	<SFML/Graphics/Rect.hpp>
+	<SFML/Graphics/Export.hpp>
+	<SFML/Graphics/Drawable.hpp>
+	<SFML/Graphics/Transformable.hpp>
+	<SFML/Graphics/Font.hpp>
+	<SFML/Graphics/Rect.hpp>
+	<SFML/Graphics/VertexArray.hpp>
+	<SFML/System/String.hpp>
+	<string>
+	<vector>
 
-<<<<<<< HEAD
+1478137054 c:\users\steven\estructurassegundoproyecto\sfml-2.4.0\include\sfml\window.hpp
+
+1470642834 c:\users\usuario\desktop\segundaprograestructuras\sfml-2.4.0\include\sfml\window.hpp
+
+1478137054 c:\users\steven\estructurassegundoproyecto\sfml-2.4.0\include\sfml\system.hpp
+
+1470642834 c:\users\usuario\desktop\segundaprograestructuras\sfml-2.4.0\include\sfml\system.hpp
+
 1478137054 c:\users\steven\estructurassegundoproyecto\sfml-2.4.0\include\sfml\config.hpp
 	"TargetConditionals.h"
 
@@ -489,7 +637,7 @@
 	<ostream>
 
 1478137054 c:\users\steven\estructurassegundoproyecto\sfml-2.4.0\include\sfml\system\fileinputstream.hpp
-=======
+
 1470642834 c:\users\usuario\desktop\segundaprograestructuras\sfml-2.4.0\include\sfml\config.hpp
 	"TargetConditionals.h"
 
@@ -508,15 +656,7 @@
 	<ostream>
 
 1470642834 c:\users\usuario\desktop\segundaprograestructuras\sfml-2.4.0\include\sfml\system\fileinputstream.hpp
->>>>>>> cb69b025a2f3884aad0ff63b8a8eab6e759a1471
-	<SFML/Config.hpp>
-	<SFML/System/Export.hpp>
-	<SFML/System/InputStream.hpp>
-	<SFML/System/NonCopyable.hpp>
-	<cstdio>
-	<string>
 
-<<<<<<< HEAD
 1478137054 c:\users\steven\estructurassegundoproyecto\sfml-2.4.0\include\sfml\system\inputstream.hpp
 	<SFML/Config.hpp>
 	<SFML/System/Export.hpp>
@@ -529,7 +669,7 @@
 	<SFML/System/NonCopyable.hpp>
 
 1478137054 c:\users\steven\estructurassegundoproyecto\sfml-2.4.0\include\sfml\system\memoryinputstream.hpp
-=======
+
 1470642834 c:\users\usuario\desktop\segundaprograestructuras\sfml-2.4.0\include\sfml\system\inputstream.hpp
 	<SFML/Config.hpp>
 	<SFML/System/Export.hpp>
@@ -542,13 +682,7 @@
 	<SFML/System/NonCopyable.hpp>
 
 1470642834 c:\users\usuario\desktop\segundaprograestructuras\sfml-2.4.0\include\sfml\system\memoryinputstream.hpp
->>>>>>> cb69b025a2f3884aad0ff63b8a8eab6e759a1471
-	<SFML/Config.hpp>
-	<SFML/System/InputStream.hpp>
-	<SFML/System/Export.hpp>
-	<cstdlib>
 
-<<<<<<< HEAD
 1478137054 c:\users\steven\estructurassegundoproyecto\sfml-2.4.0\include\sfml\system\mutex.hpp
 	<SFML/System/Export.hpp>
 	<SFML/System/NonCopyable.hpp>
@@ -558,7 +692,7 @@
 	<SFML/System/Time.hpp>
 
 1478137054 c:\users\steven\estructurassegundoproyecto\sfml-2.4.0\include\sfml\system\string.hpp
-=======
+
 1470642834 c:\users\usuario\desktop\segundaprograestructuras\sfml-2.4.0\include\sfml\system\mutex.hpp
 	<SFML/System/Export.hpp>
 	<SFML/System/NonCopyable.hpp>
@@ -568,58 +702,31 @@
 	<SFML/System/Time.hpp>
 
 1470642834 c:\users\usuario\desktop\segundaprograestructuras\sfml-2.4.0\include\sfml\system\string.hpp
->>>>>>> cb69b025a2f3884aad0ff63b8a8eab6e759a1471
-	<SFML/System/Export.hpp>
-	<SFML/System/Utf.hpp>
-	<iterator>
-	<locale>
-	<string>
-	<SFML/System/String.inl>
 
-<<<<<<< HEAD
 1478137054 c:\users\steven\estructurassegundoproyecto\sfml-2.4.0\include\sfml\system\utf.hpp
-=======
-1470642834 c:\users\usuario\desktop\segundaprograestructuras\sfml-2.4.0\include\sfml\system\utf.hpp
->>>>>>> cb69b025a2f3884aad0ff63b8a8eab6e759a1471
-	<SFML/Config.hpp>
-	<algorithm>
-	<locale>
-	<string>
-	<cstdlib>
-	<SFML/System/Utf.inl>
 
-<<<<<<< HEAD
+1470642834 c:\users\usuario\desktop\segundaprograestructuras\sfml-2.4.0\include\sfml\system\utf.hpp
+
 1478137054 c:\users\steven\estructurassegundoproyecto\sfml-2.4.0\include\sfml\system\utf.inl
 
 1478137054 c:\users\steven\estructurassegundoproyecto\sfml-2.4.0\include\sfml\system\string.inl
 
 1478137054 c:\users\steven\estructurassegundoproyecto\sfml-2.4.0\include\sfml\system\thread.hpp
-=======
+
 1470642834 c:\users\usuario\desktop\segundaprograestructuras\sfml-2.4.0\include\sfml\system\utf.inl
 
 1470642834 c:\users\usuario\desktop\segundaprograestructuras\sfml-2.4.0\include\sfml\system\string.inl
 
 1470642834 c:\users\usuario\desktop\segundaprograestructuras\sfml-2.4.0\include\sfml\system\thread.hpp
->>>>>>> cb69b025a2f3884aad0ff63b8a8eab6e759a1471
-	<SFML/System/Export.hpp>
-	<SFML/System/NonCopyable.hpp>
-	<cstdlib>
-	<SFML/System/Thread.inl>
 
-<<<<<<< HEAD
 1478137054 c:\users\steven\estructurassegundoproyecto\sfml-2.4.0\include\sfml\system\thread.inl
 
 1478137054 c:\users\steven\estructurassegundoproyecto\sfml-2.4.0\include\sfml\system\threadlocal.hpp
-=======
+
 1470642834 c:\users\usuario\desktop\segundaprograestructuras\sfml-2.4.0\include\sfml\system\thread.inl
 
 1470642834 c:\users\usuario\desktop\segundaprograestructuras\sfml-2.4.0\include\sfml\system\threadlocal.hpp
->>>>>>> cb69b025a2f3884aad0ff63b8a8eab6e759a1471
-	<SFML/System/Export.hpp>
-	<SFML/System/NonCopyable.hpp>
-	<cstdlib>
 
-<<<<<<< HEAD
 1478137054 c:\users\steven\estructurassegundoproyecto\sfml-2.4.0\include\sfml\system\threadlocalptr.hpp
 	<SFML/System/ThreadLocal.hpp>
 	<SFML/System/ThreadLocalPtr.inl>
@@ -637,7 +744,7 @@
 1478137054 c:\users\steven\estructurassegundoproyecto\sfml-2.4.0\include\sfml\system\vector3.inl
 
 1478137054 c:\users\steven\estructurassegundoproyecto\sfml-2.4.0\include\sfml\window\context.hpp
-=======
+
 1470642834 c:\users\usuario\desktop\segundaprograestructuras\sfml-2.4.0\include\sfml\system\threadlocalptr.hpp
 	<SFML/System/ThreadLocal.hpp>
 	<SFML/System/ThreadLocalPtr.inl>
@@ -655,13 +762,7 @@
 1470642834 c:\users\usuario\desktop\segundaprograestructuras\sfml-2.4.0\include\sfml\system\vector3.inl
 
 1470642834 c:\users\usuario\desktop\segundaprograestructuras\sfml-2.4.0\include\sfml\window\context.hpp
->>>>>>> cb69b025a2f3884aad0ff63b8a8eab6e759a1471
-	<SFML/Window/Export.hpp>
-	<SFML/Window/GlResource.hpp>
-	<SFML/Window/ContextSettings.hpp>
-	<SFML/System/NonCopyable.hpp>
 
-<<<<<<< HEAD
 1478137054 c:\users\steven\estructurassegundoproyecto\sfml-2.4.0\include\sfml\window\export.hpp
 	<SFML/Config.hpp>
 
@@ -671,7 +772,7 @@
 1478137054 c:\users\steven\estructurassegundoproyecto\sfml-2.4.0\include\sfml\window\contextsettings.hpp
 
 1478137054 c:\users\steven\estructurassegundoproyecto\sfml-2.4.0\include\sfml\window\event.hpp
-=======
+
 1470642834 c:\users\usuario\desktop\segundaprograestructuras\sfml-2.4.0\include\sfml\window\export.hpp
 	<SFML/Config.hpp>
 
@@ -681,14 +782,7 @@
 1470642834 c:\users\usuario\desktop\segundaprograestructuras\sfml-2.4.0\include\sfml\window\contextsettings.hpp
 
 1470642834 c:\users\usuario\desktop\segundaprograestructuras\sfml-2.4.0\include\sfml\window\event.hpp
->>>>>>> cb69b025a2f3884aad0ff63b8a8eab6e759a1471
-	<SFML/Config.hpp>
-	<SFML/Window/Joystick.hpp>
-	<SFML/Window/Keyboard.hpp>
-	<SFML/Window/Mouse.hpp>
-	<SFML/Window/Sensor.hpp>
 
-<<<<<<< HEAD
 1478137054 c:\users\steven\estructurassegundoproyecto\sfml-2.4.0\include\sfml\window\joystick.hpp
 	<SFML/Window/Export.hpp>
 	<SFML/System/String.hpp>
@@ -701,7 +795,7 @@
 	<SFML/System/Vector2.hpp>
 
 1478137054 c:\users\steven\estructurassegundoproyecto\sfml-2.4.0\include\sfml\window\sensor.hpp
-=======
+
 1470642834 c:\users\usuario\desktop\segundaprograestructuras\sfml-2.4.0\include\sfml\window\joystick.hpp
 	<SFML/Window/Export.hpp>
 	<SFML/System/String.hpp>
@@ -714,12 +808,7 @@
 	<SFML/System/Vector2.hpp>
 
 1470642834 c:\users\usuario\desktop\segundaprograestructuras\sfml-2.4.0\include\sfml\window\sensor.hpp
->>>>>>> cb69b025a2f3884aad0ff63b8a8eab6e759a1471
-	<SFML/Window/Export.hpp>
-	<SFML/System/Vector3.hpp>
-	<SFML/System/Time.hpp>
 
-<<<<<<< HEAD
 1478137054 c:\users\steven\estructurassegundoproyecto\sfml-2.4.0\include\sfml\window\touch.hpp
 	<SFML/Window/Export.hpp>
 	<SFML/System/Vector2.hpp>
@@ -729,7 +818,7 @@
 	<vector>
 
 1478137054 c:\users\steven\estructurassegundoproyecto\sfml-2.4.0\include\sfml\window\window.hpp
-=======
+
 1470642834 c:\users\usuario\desktop\segundaprograestructuras\sfml-2.4.0\include\sfml\window\touch.hpp
 	<SFML/Window/Export.hpp>
 	<SFML/System/Vector2.hpp>
@@ -739,19 +828,7 @@
 	<vector>
 
 1470642834 c:\users\usuario\desktop\segundaprograestructuras\sfml-2.4.0\include\sfml\window\window.hpp
->>>>>>> cb69b025a2f3884aad0ff63b8a8eab6e759a1471
-	<SFML/Window/Export.hpp>
-	<SFML/Window/ContextSettings.hpp>
-	<SFML/Window/VideoMode.hpp>
-	<SFML/Window/WindowHandle.hpp>
-	<SFML/Window/WindowStyle.hpp>
-	<SFML/Window/GlResource.hpp>
-	<SFML/System/Clock.hpp>
-	<SFML/System/Vector2.hpp>
-	<SFML/System/NonCopyable.hpp>
-	<SFML/System/String.hpp>
 
-<<<<<<< HEAD
 1478137054 c:\users\steven\estructurassegundoproyecto\sfml-2.4.0\include\sfml\window\windowhandle.hpp
 	<SFML/Config.hpp>
 
@@ -768,7 +845,7 @@
 	<SFML/Graphics/Shape.hpp>
 
 1478137054 c:\users\steven\estructurassegundoproyecto\sfml-2.4.0\include\sfml\graphics\shape.hpp
-=======
+
 1470642834 c:\users\usuario\desktop\segundaprograestructuras\sfml-2.4.0\include\sfml\window\windowhandle.hpp
 	<SFML/Config.hpp>
 
@@ -785,49 +862,27 @@
 	<SFML/Graphics/Shape.hpp>
 
 1470642834 c:\users\usuario\desktop\segundaprograestructuras\sfml-2.4.0\include\sfml\graphics\shape.hpp
->>>>>>> cb69b025a2f3884aad0ff63b8a8eab6e759a1471
-	<SFML/Graphics/Export.hpp>
-	<SFML/Graphics/Drawable.hpp>
-	<SFML/Graphics/Transformable.hpp>
-	<SFML/Graphics/VertexArray.hpp>
-	<SFML/System/Vector2.hpp>
 
-<<<<<<< HEAD
 1478137054 c:\users\steven\estructurassegundoproyecto\sfml-2.4.0\include\sfml\graphics\drawable.hpp
 	<SFML/Graphics/Export.hpp>
 	<SFML/Graphics/RenderStates.hpp>
 
 1478137054 c:\users\steven\estructurassegundoproyecto\sfml-2.4.0\include\sfml\graphics\renderstates.hpp
-=======
+
 1470642834 c:\users\usuario\desktop\segundaprograestructuras\sfml-2.4.0\include\sfml\graphics\drawable.hpp
 	<SFML/Graphics/Export.hpp>
 	<SFML/Graphics/RenderStates.hpp>
 
 1470642834 c:\users\usuario\desktop\segundaprograestructuras\sfml-2.4.0\include\sfml\graphics\renderstates.hpp
->>>>>>> cb69b025a2f3884aad0ff63b8a8eab6e759a1471
-	<SFML/Graphics/Export.hpp>
-	<SFML/Graphics/BlendMode.hpp>
-	<SFML/Graphics/Transform.hpp>
 
-<<<<<<< HEAD
 1478137054 c:\users\steven\estructurassegundoproyecto\sfml-2.4.0\include\sfml\graphics\transform.hpp
-=======
+
 1470642834 c:\users\usuario\desktop\segundaprograestructuras\sfml-2.4.0\include\sfml\graphics\transform.hpp
->>>>>>> cb69b025a2f3884aad0ff63b8a8eab6e759a1471
-	<SFML/Graphics/Export.hpp>
-	<SFML/Graphics/Rect.hpp>
-	<SFML/System/Vector2.hpp>
 
-<<<<<<< HEAD
 1478137054 c:\users\steven\estructurassegundoproyecto\sfml-2.4.0\include\sfml\graphics\rect.hpp
-=======
-1470642834 c:\users\usuario\desktop\segundaprograestructuras\sfml-2.4.0\include\sfml\graphics\rect.hpp
->>>>>>> cb69b025a2f3884aad0ff63b8a8eab6e759a1471
-	<SFML/System/Vector2.hpp>
-	<algorithm>
-	<SFML/Graphics/Rect.inl>
 
-<<<<<<< HEAD
+1470642834 c:\users\usuario\desktop\segundaprograestructuras\sfml-2.4.0\include\sfml\graphics\rect.hpp
+
 1478137054 c:\users\steven\estructurassegundoproyecto\sfml-2.4.0\include\sfml\graphics\rect.inl
 
 1478137054 c:\users\steven\estructurassegundoproyecto\sfml-2.4.0\include\sfml\graphics\transformable.hpp
@@ -835,7 +890,7 @@
 	<SFML/Graphics/Transform.hpp>
 
 1478137054 c:\users\steven\estructurassegundoproyecto\sfml-2.4.0\include\sfml\graphics\vertexarray.hpp
-=======
+
 1470642834 c:\users\usuario\desktop\segundaprograestructuras\sfml-2.4.0\include\sfml\graphics\rect.inl
 
 1470642834 c:\users\usuario\desktop\segundaprograestructuras\sfml-2.4.0\include\sfml\graphics\transformable.hpp
@@ -843,191 +898,86 @@
 	<SFML/Graphics/Transform.hpp>
 
 1470642834 c:\users\usuario\desktop\segundaprograestructuras\sfml-2.4.0\include\sfml\graphics\vertexarray.hpp
->>>>>>> cb69b025a2f3884aad0ff63b8a8eab6e759a1471
-	<SFML/Graphics/Export.hpp>
-	<SFML/Graphics/Vertex.hpp>
-	<SFML/Graphics/PrimitiveType.hpp>
-	<SFML/Graphics/Rect.hpp>
-	<SFML/Graphics/Drawable.hpp>
-	<vector>
 
-<<<<<<< HEAD
 1478137054 c:\users\steven\estructurassegundoproyecto\sfml-2.4.0\include\sfml\graphics\vertex.hpp
-=======
-1470642834 c:\users\usuario\desktop\segundaprograestructuras\sfml-2.4.0\include\sfml\graphics\vertex.hpp
->>>>>>> cb69b025a2f3884aad0ff63b8a8eab6e759a1471
-	<SFML/Graphics/Export.hpp>
-	<SFML/Graphics/Color.hpp>
-	<SFML/System/Vector2.hpp>
 
-<<<<<<< HEAD
+1470642834 c:\users\usuario\desktop\segundaprograestructuras\sfml-2.4.0\include\sfml\graphics\vertex.hpp
+
 1478137054 c:\users\steven\estructurassegundoproyecto\sfml-2.4.0\include\sfml\graphics\color.hpp
 	<SFML/Graphics/Export.hpp>
 
 1478137054 c:\users\steven\estructurassegundoproyecto\sfml-2.4.0\include\sfml\graphics\primitivetype.hpp
 
 1478137054 c:\users\steven\estructurassegundoproyecto\sfml-2.4.0\include\sfml\graphics\convexshape.hpp
-=======
+
 1470642834 c:\users\usuario\desktop\segundaprograestructuras\sfml-2.4.0\include\sfml\graphics\color.hpp
 	<SFML/Graphics/Export.hpp>
 
 1470642834 c:\users\usuario\desktop\segundaprograestructuras\sfml-2.4.0\include\sfml\graphics\primitivetype.hpp
 
 1470642834 c:\users\usuario\desktop\segundaprograestructuras\sfml-2.4.0\include\sfml\graphics\convexshape.hpp
->>>>>>> cb69b025a2f3884aad0ff63b8a8eab6e759a1471
-	<SFML/Graphics/Export.hpp>
-	<SFML/Graphics/Shape.hpp>
-	<vector>
 
-<<<<<<< HEAD
 1478137054 c:\users\steven\estructurassegundoproyecto\sfml-2.4.0\include\sfml\graphics\font.hpp
-=======
-1470642834 c:\users\usuario\desktop\segundaprograestructuras\sfml-2.4.0\include\sfml\graphics\font.hpp
->>>>>>> cb69b025a2f3884aad0ff63b8a8eab6e759a1471
-	<SFML/Graphics/Export.hpp>
-	<SFML/Graphics/Glyph.hpp>
-	<SFML/Graphics/Texture.hpp>
-	<SFML/Graphics/Rect.hpp>
-	<SFML/System/Vector2.hpp>
-	<SFML/System/String.hpp>
-	<map>
-	<string>
-	<vector>
 
-<<<<<<< HEAD
+1470642834 c:\users\usuario\desktop\segundaprograestructuras\sfml-2.4.0\include\sfml\graphics\font.hpp
+
 1478137054 c:\users\steven\estructurassegundoproyecto\sfml-2.4.0\include\sfml\graphics\glyph.hpp
 	<SFML/Graphics/Export.hpp>
 	<SFML/Graphics/Rect.hpp>
 
 1478137054 c:\users\steven\estructurassegundoproyecto\sfml-2.4.0\include\sfml\graphics\texture.hpp
-=======
+
 1470642834 c:\users\usuario\desktop\segundaprograestructuras\sfml-2.4.0\include\sfml\graphics\glyph.hpp
 	<SFML/Graphics/Export.hpp>
 	<SFML/Graphics/Rect.hpp>
 
 1470642834 c:\users\usuario\desktop\segundaprograestructuras\sfml-2.4.0\include\sfml\graphics\texture.hpp
->>>>>>> cb69b025a2f3884aad0ff63b8a8eab6e759a1471
-	<SFML/Graphics/Export.hpp>
-	<SFML/Graphics/Image.hpp>
-	<SFML/Window/GlResource.hpp>
 
-<<<<<<< HEAD
 1478137054 c:\users\steven\estructurassegundoproyecto\sfml-2.4.0\include\sfml\graphics\image.hpp
-=======
-1470642834 c:\users\usuario\desktop\segundaprograestructuras\sfml-2.4.0\include\sfml\graphics\image.hpp
->>>>>>> cb69b025a2f3884aad0ff63b8a8eab6e759a1471
-	<SFML/Graphics/Export.hpp>
-	<SFML/Graphics/Color.hpp>
-	<SFML/Graphics/Rect.hpp>
-	<string>
-	<vector>
 
-<<<<<<< HEAD
+1470642834 c:\users\usuario\desktop\segundaprograestructuras\sfml-2.4.0\include\sfml\graphics\image.hpp
+
 1478137054 c:\users\steven\estructurassegundoproyecto\sfml-2.4.0\include\sfml\graphics\rectangleshape.hpp
 	<SFML/Graphics/Export.hpp>
 	<SFML/Graphics/Shape.hpp>
 
 1478137054 c:\users\steven\estructurassegundoproyecto\sfml-2.4.0\include\sfml\graphics\rendertarget.hpp
-=======
+
 1470642834 c:\users\usuario\desktop\segundaprograestructuras\sfml-2.4.0\include\sfml\graphics\rectangleshape.hpp
 	<SFML/Graphics/Export.hpp>
 	<SFML/Graphics/Shape.hpp>
 
 1470642834 c:\users\usuario\desktop\segundaprograestructuras\sfml-2.4.0\include\sfml\graphics\rendertarget.hpp
->>>>>>> cb69b025a2f3884aad0ff63b8a8eab6e759a1471
-	<SFML/Graphics/Export.hpp>
-	<SFML/Graphics/Color.hpp>
-	<SFML/Graphics/Rect.hpp>
-	<SFML/Graphics/View.hpp>
-	<SFML/Graphics/Transform.hpp>
-	<SFML/Graphics/BlendMode.hpp>
-	<SFML/Graphics/RenderStates.hpp>
-	<SFML/Graphics/PrimitiveType.hpp>
-	<SFML/Graphics/Vertex.hpp>
-	<SFML/System/NonCopyable.hpp>
 
-<<<<<<< HEAD
 1478137054 c:\users\steven\estructurassegundoproyecto\sfml-2.4.0\include\sfml\graphics\view.hpp
-=======
+
 1470642834 c:\users\usuario\desktop\segundaprograestructuras\sfml-2.4.0\include\sfml\graphics\view.hpp
->>>>>>> cb69b025a2f3884aad0ff63b8a8eab6e759a1471
-	<SFML/Graphics/Export.hpp>
-	<SFML/Graphics/Rect.hpp>
-	<SFML/Graphics/Transform.hpp>
-	<SFML/System/Vector2.hpp>
 
-<<<<<<< HEAD
 1478137054 c:\users\steven\estructurassegundoproyecto\sfml-2.4.0\include\sfml\graphics\rendertexture.hpp
-=======
+
 1470642834 c:\users\usuario\desktop\segundaprograestructuras\sfml-2.4.0\include\sfml\graphics\rendertexture.hpp
->>>>>>> cb69b025a2f3884aad0ff63b8a8eab6e759a1471
-	<SFML/Graphics/Export.hpp>
-	<SFML/Graphics/Texture.hpp>
-	<SFML/Graphics/RenderTarget.hpp>
 
-<<<<<<< HEAD
 1478137054 c:\users\steven\estructurassegundoproyecto\sfml-2.4.0\include\sfml\graphics\renderwindow.hpp
-=======
+
 1470642834 c:\users\usuario\desktop\segundaprograestructuras\sfml-2.4.0\include\sfml\graphics\renderwindow.hpp
->>>>>>> cb69b025a2f3884aad0ff63b8a8eab6e759a1471
-	<SFML/Graphics/Export.hpp>
-	<SFML/Graphics/RenderTarget.hpp>
-	<SFML/Graphics/Image.hpp>
-	<SFML/Window/Window.hpp>
-	<string>
 
-<<<<<<< HEAD
 1478137054 c:\users\steven\estructurassegundoproyecto\sfml-2.4.0\include\sfml\graphics\shader.hpp
-=======
+
 1470642834 c:\users\usuario\desktop\segundaprograestructuras\sfml-2.4.0\include\sfml\graphics\shader.hpp
->>>>>>> cb69b025a2f3884aad0ff63b8a8eab6e759a1471
-	<SFML/Graphics/Export.hpp>
-	<SFML/Graphics/Glsl.hpp>
-	<SFML/Window/GlResource.hpp>
-	<SFML/System/NonCopyable.hpp>
-	<SFML/System/Vector2.hpp>
-	<SFML/System/Vector3.hpp>
-	<map>
-	<string>
 
-<<<<<<< HEAD
 1478137054 c:\users\steven\estructurassegundoproyecto\sfml-2.4.0\include\sfml\graphics\glsl.hpp
-=======
-1470642834 c:\users\usuario\desktop\segundaprograestructuras\sfml-2.4.0\include\sfml\graphics\glsl.hpp
->>>>>>> cb69b025a2f3884aad0ff63b8a8eab6e759a1471
-	<SFML/Graphics/Transform.hpp>
-	<SFML/Graphics/Color.hpp>
-	<SFML/System/Vector2.hpp>
-	<SFML/System/Vector3.hpp>
-	<SFML/Graphics/Glsl.inl>
 
-<<<<<<< HEAD
+1470642834 c:\users\usuario\desktop\segundaprograestructuras\sfml-2.4.0\include\sfml\graphics\glsl.hpp
+
 1478137054 c:\users\steven\estructurassegundoproyecto\sfml-2.4.0\include\sfml\graphics\glsl.inl
 
 1478137054 c:\users\steven\estructurassegundoproyecto\sfml-2.4.0\include\sfml\graphics\sprite.hpp
-=======
+
 1470642834 c:\users\usuario\desktop\segundaprograestructuras\sfml-2.4.0\include\sfml\graphics\glsl.inl
 
 1470642834 c:\users\usuario\desktop\segundaprograestructuras\sfml-2.4.0\include\sfml\graphics\sprite.hpp
->>>>>>> cb69b025a2f3884aad0ff63b8a8eab6e759a1471
-	<SFML/Graphics/Export.hpp>
-	<SFML/Graphics/Drawable.hpp>
-	<SFML/Graphics/Transformable.hpp>
-	<SFML/Graphics/Vertex.hpp>
-	<SFML/Graphics/Rect.hpp>
 
-<<<<<<< HEAD
 1478137054 c:\users\steven\estructurassegundoproyecto\sfml-2.4.0\include\sfml\graphics\text.hpp
-=======
+
 1470642834 c:\users\usuario\desktop\segundaprograestructuras\sfml-2.4.0\include\sfml\graphics\text.hpp
->>>>>>> cb69b025a2f3884aad0ff63b8a8eab6e759a1471
-	<SFML/Graphics/Export.hpp>
-	<SFML/Graphics/Drawable.hpp>
-	<SFML/Graphics/Transformable.hpp>
-	<SFML/Graphics/Font.hpp>
-	<SFML/Graphics/Rect.hpp>
-	<SFML/Graphics/VertexArray.hpp>
-	<SFML/System/String.hpp>
-	<string>
-	<vector>
 
