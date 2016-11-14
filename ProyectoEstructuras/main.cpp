@@ -48,7 +48,7 @@ priority_queue< nodo , vector<nodo> , cmp > Q; //priority queue propia del c++, 
 bool visitado[tamano];      //para vértices visitados
 par distancia[tamano];
 
-void insertarCiudad(char pciudad[]){
+void insertarCiudad(char pciudad[], int x,int y){
     string ciudad = pciudad;
     struct vertice *nnv = new vertice();
 
@@ -57,8 +57,8 @@ void insertarCiudad(char pciudad[]){
     nnv->numeroCiudad = numCiudad;
     numCiudad=numCiudad+1;
     nnv->sigV=grafo;
-//    nnv->x = x;
-    //nnv->y = y;
+    nnv->x = x;
+    nnv->y = y;
     grafo =nnv;
 
 }
@@ -182,11 +182,11 @@ void imprimirMatAdy(){
 
 void crearCiudades(){
     // 33 ciudades
-    insertarCiudad("San Jose");
-    insertarCiudad("Naranjo");
-    insertarCiudad("Palmares");
-    insertarCiudad("Zarcero");
-    insertarCiudad("Alajuela");
+    insertarCiudad("San Jose",902,404);
+    insertarCiudad("Naranjo",811,344);
+    insertarCiudad("Palmares",793,350);
+    insertarCiudad("Zarcero",807,305);
+    insertarCiudad("Alajuela",);
     insertarCiudad("Sucre");
     insertarCiudad("Nicoya");
     insertarCiudad("Ciudad Neily");
