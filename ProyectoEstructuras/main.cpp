@@ -8,6 +8,7 @@
 #include <queue>
 #include <stack>
 #include<string>
+#include "windows.h"
 
 using namespace std;
 
@@ -15,11 +16,12 @@ using namespace std;
 #define tamano 33               // tamano maximo de vertices
 #define nodo pair < int,int >
 
-string todasCiudades[40];
+string todasCiudades[40],joder;
+char* buffer;
 int matAdy [tamano][tamano];
 int numCiudad = 0;
 int contador =0;
-int tamanoFuente = 18;
+int pos = 18;
 struct arco {
     struct vertice *destino;
     int distancia;
@@ -33,7 +35,7 @@ struct vertice{
     struct vertice *sigV;
     struct arco *sigA;
     bool visitado;
-}*grafo;
+}*grafo,*ini;
 
 
 struct par {
@@ -63,7 +65,7 @@ void insertarCiudad(char pciudad[], int x,int y){
     nnv->sigV=grafo;
     nnv->x = x;
     nnv->y = y;
-    grafo =nnv;
+    grafo = nnv;
 
 }
 struct vertice* buscar(char pciudad[]){
@@ -356,7 +358,7 @@ void enlazarCiudades()
 
 int main(int, char const**)
 {
-    struct vertice * tempV = grafo;
+
     crearCiudades();
     enlazarCiudades();
     cargarMatAdy();
@@ -366,8 +368,9 @@ int main(int, char const**)
     imprimirRutaCorta(13);
 
 
+
     // Create the main window
-    sf::RenderWindow window(sf::VideoMode(1410, 970), "Waze - TEC");
+    sf::RenderWindow window(sf::VideoMode(1366, 768), "Waze - TEC");
 
     // Set the Icon
     sf::Image icon;
@@ -407,13 +410,7 @@ int main(int, char const**)
     text1.setPosition(2,0);
     text1.setFillColor(sf::Color::Black);
 
-    sf::Text text("0 - Los Chiles Frontera", font, 18);
-    text.setPosition(9,38);
-    text.setFillColor(sf::Color::Black);
 
-    sf::Text text2("1 - San Jose", font, 18); // 18 tamano fuente
-    text2.setPosition(9,58);
-    text2.setFillColor(sf::Color::Black);
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////
     sf::RectangleShape toolBar(sf::Vector2f(316,970)); /// tamano del menu donde estan las ciudades
@@ -464,15 +461,7 @@ int main(int, char const**)
             }
         }
 
-        if (contador <=32){
 
-            sf::Text ciudad(tempV->ciudad, font, 18);
-            ciudad.setPosition(6,tamanoFuente); //donde tamano empieza en 18 y al final del ciclo de la ventana le sumo 18
-            ciudad.setFillColor(sf::Color::Black);
-            contador++;
-            window.draw(ciudad);
-            tamanoFuente += 18;
-        }
 
         // Clear screen
         window.clear(sf::Color(153,217,234));
@@ -491,14 +480,24 @@ int main(int, char const**)
 
         // Draw the string
         window.draw(text1);
-        window.draw(text);
-        window.draw(text2 );
-
+        struct vertice * tem = grafo;
+        sf::Text ciudad(tem->ciudad, font, 18);
+        while (contador <=32){
+            ciudad.setString("* " + tem->ciudad);
+            ciudad.setPosition(6,pos); //donde tamano empieza en 18 y al final del ciclo de la ventana le sumo 18
+            ciudad.setFillColor(sf::Color::Black);
+            window.draw(ciudad);
+            //window.display();
+            pos += 20;
+            tem = tem ->sigV;
+            //Sleep(100);
+            contador++;
+            //window.display();
+        }
         // Update the window
         window.display();
-        //cont++; // futuro contador para escribir todas las ciudades
-
-        tempV = tempV ->sigV;
+        contador = 0; // futuro contador para escribir todas las ciudade
+        pos = 18;
     }
 
     return EXIT_SUCCESS;
