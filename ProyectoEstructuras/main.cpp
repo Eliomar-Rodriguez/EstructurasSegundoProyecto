@@ -1,13 +1,14 @@
 #include <SFML/Graphics.hpp>
 #include<string.h>
 #include<iostream>
-#include <iostream>
 #include <stdlib.h>
 #include <stdio.h>
 #include <vector>
 #include <queue>
 #include <stack>
 #include<string>
+#include<sstream>
+#include "windows.h"
 
 using namespace std;
 
@@ -15,11 +16,16 @@ using namespace std;
 #define tamano 33               // tamano maximo de vertices
 #define nodo pair < int,int >
 
-string todasCiudades[40];
+string todasCiudades[40],joder;
+char* buffer;
 int matAdy [tamano][tamano];
 int numCiudad = 0;
 int contador =0;
+
 int tamanoFuente = 38;
+
+int pos = 18;
+
 struct arco {
     struct vertice *destino;
     int distancia;
@@ -63,7 +69,7 @@ void insertarCiudad(char pciudad[], int x,int y){
     nnv->sigV=grafo;
     nnv->x = x;
     nnv->y = y;
-    grafo =nnv;
+    grafo = nnv;
 
 }
 struct vertice* buscar(char pciudad[]){
@@ -356,8 +362,6 @@ void enlazarCiudades()
 
 int main(int, char const**)
 {
-    //sf::Text ciudades[];
-
     crearCiudades();
     enlazarCiudades();
     cargarMatAdy();
@@ -367,9 +371,8 @@ int main(int, char const**)
     imprimirRutaCorta(13);
     struct vertice * tempV = ini;
 
-
     // Create the main window
-    sf::RenderWindow window(sf::VideoMode(1410, 970), "Waze - TEC");
+    sf::RenderWindow window(sf::VideoMode(1366, 768), "Waze - TEC");
 
     // Set the Icon
     sf::Image icon;
@@ -392,29 +395,13 @@ int main(int, char const**)
     if (!font.loadFromFile("pala.ttf")) {
         return EXIT_FAILURE;
     }
-    /*--------------------------------------------------------------------------------------------------*/
-
-    //int cont=0;
-    /*dentro del ciclo de la ventana lo que hay que hacer es un
-    if (cont <=listaCiudades.size()) entonces
-    sf::Text ciudad(cont.toString()+listaciudades.get(cont), font, 18);
-    ciudad.setPosition(6,tamano); donde tamano empieza en 18 y al final del ciclo de la ventana le sumo 18
-    ciudad.setFillColor(sf::Color::Black);
-
-    y se pone un solo write al final de ciudad  */
-
-    /*--------------------------------------------------------------------------------------------------*/
 
     sf::Text titulo("Lista de ciudades", font, 25);
     titulo.setPosition(2,0);
     titulo.setFillColor(sf::Color::Black);
-    //text1.Bold;
 
     sf::Text ciudad("",font,0);
 
-    sf::Text text2("1 - San Jose", font, 18); // 18 tamano fuente
-    text2.setPosition(9,58);
-    text2.setFillColor(sf::Color::Black);
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////
     sf::RectangleShape toolBar(sf::Vector2f(316,970)); /// tamano del menu donde estan las ciudades
@@ -451,10 +438,19 @@ int main(int, char const**)
     // Start the game loop
     while (window.isOpen())
     {
+
+        string result;
         string hola = "numero";
-        hola = hola + contador;
+        std::stringstream sstm;
+        sstm << hola << contador;
+        result = sstm.str();
+
+
+        //string hola = "numero",result;
+        //result = hola + winstl::int_to_string(contador);
+        ////hola = hola + result;
         contador++;
-        cout<<hola<<endl;
+        cout<<result<<endl;
         // Process events
         sf::Event event;
         while (window.pollEvent(event))
@@ -469,6 +465,7 @@ int main(int, char const**)
                 window.close();
             }
         }
+
         /*if(contador <33){
 
             sf::Text ciudad(tempV->ciudad, font, 18);
@@ -507,14 +504,35 @@ int main(int, char const**)
         // este draw solo se hace una vez
 
         // Draw the string
-        window.draw(titulo);
+
+        //window.draw(titulo);
 
 
         // Update the window
-        window.display();
+        //window.display();
         //cont++; // futuro contador para escribir todas las ciudades
 
 
+
+        window.draw(titulo);
+        struct vertice * tem = grafo;
+        sf::Text ciudad(tem->ciudad, font, 18);
+        while (contador <=32){
+            ciudad.setString("* " + tem->ciudad);
+            ciudad.setPosition(6,pos); //donde tamano empieza en 18 y al final del ciclo de la ventana le sumo 18
+            ciudad.setFillColor(sf::Color::Black);
+            window.draw(ciudad);
+            //window.display();
+            pos += 20;
+            tem = tem ->sigV;
+            //Sleep(100);
+            contador++;
+            //window.display();
+        }
+        // Update the window
+        window.display();
+        contador = 0; // futuro contador para escribir todas las ciudade
+        pos = 18;
     }
 
     return EXIT_SUCCESS;
