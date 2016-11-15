@@ -9,6 +9,7 @@
 #include <stack>
 #include<string>
 #include "windows.h"
+#include <sstream>
 
 using namespace std;
 
@@ -20,7 +21,7 @@ string todasCiudades[40],joder;
 char* buffer;
 int matAdy [tamano][tamano];
 int numCiudad = 0;
-int contador =0;
+int contador = 32;
 int pos = 18;
 struct arco {
     struct vertice *destino;
@@ -482,21 +483,22 @@ int main(int, char const**)
         window.draw(text1);
         struct vertice * tem = grafo;
         sf::Text ciudad(tem->ciudad, font, 18);
-        while (contador <=32){
-            ciudad.setString("* " + tem->ciudad);
+        while (contador >=0){
+            string numero;
+            std::stringstream sstm;
+            sstm << contador << ") " << tem->ciudad;
+            numero = sstm.str();
+            ciudad.setString(numero);
             ciudad.setPosition(6,pos); //donde tamano empieza en 18 y al final del ciclo de la ventana le sumo 18
             ciudad.setFillColor(sf::Color::Black);
             window.draw(ciudad);
-            //window.display();
             pos += 20;
             tem = tem ->sigV;
-            //Sleep(100);
-            contador++;
-            //window.display();
+            contador--;
         }
         // Update the window
         window.display();
-        contador = 0; // futuro contador para escribir todas las ciudade
+        contador = 32; // futuro contador para escribir todas las ciudade
         pos = 18;
     }
 

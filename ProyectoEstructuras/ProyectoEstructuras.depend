@@ -981,7 +981,7 @@
 
 1470642834 c:\users\usuario\desktop\segundaprograestructuras\sfml-2.4.0\include\sfml\graphics\text.hpp
 
-1479166058 source:c:\users\steven\desktop\tec\progras\estructuras\estructurassegundoproyecto\proyectoestructuras\main.cpp
+1479168112 source:c:\users\steven\desktop\tec\progras\estructuras\estructurassegundoproyecto\proyectoestructuras\main.cpp
 	<SFML/Graphics.hpp>
 	<string.h>
 	<iostream>
@@ -993,6 +993,7 @@
 	<stack>
 	<string>
 	"windows.h"
+	<sstream>
 
 1478137054 c:\users\steven\desktop\tec\progras\estructuras\estructurassegundoproyecto\sfml-2.4.0\include\sfml\graphics.hpp
 	<SFML/Window.hpp>
