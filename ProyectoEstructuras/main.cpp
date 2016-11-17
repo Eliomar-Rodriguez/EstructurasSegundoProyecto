@@ -30,6 +30,7 @@ int pos = 18;
 fstream archivo("grafo.saiyajin", ios::in | ios::out |ios::binary | ios::trunc);
 struct arco {
     struct vertice *destino;
+    struct vertice *origen;
     int distancia;
     struct arco *sigA;
 };
@@ -37,7 +38,7 @@ struct arco {
 struct vertice{
     string ciudad;
     int numeroCiudad;  // cada ciudad tiene un numero de 0 a 32
-    int x,y;
+    int x,y,cantidadArcos;
     struct vertice *sigV;
     struct arco *sigA;
     bool visitadoP1;
@@ -125,7 +126,9 @@ void insertarRutas(char porigen[],char pdestino[], int pdistancia){
     nna->distancia=pdistancia;
 
     nna->sigA =origen->sigA;
+    nna->origen = origen;
 
+    origen->cantidadArcos ++;
     origen->sigA=nna;
 }
 
@@ -148,16 +151,15 @@ void cargarMatAdy(){
         tempV=tempV->sigV;
     }
 }
-/*
+
 void leerGrafo(){ // como identifico que estoy leyendo?
     struct vertice *nnV;
     struct arco * nnA;
     while(!archivo.eof()){
-        archivo.read(reinterpret_cast<char *> (&nnv), sizeof(vertice));
-
-        while (true){
-            fgetc(archivo);
-            archivo.read(reinterpret_cast<char *> (&nnv), sizeof(vertice));
+        archivo.seekg(0,ios::beg);
+        archivo.read(reinterpret_cast<char *> (&nnV), sizeof(vertice));
+        for(int i=0; i<nnV->cantidadArcos; ){
+            archivo.read(reinterpret_cast<char *> (&nnA), sizeof(vertice));
             if (sizeof(vertice)){
 
             }
@@ -165,7 +167,7 @@ void leerGrafo(){ // como identifico que estoy leyendo?
     }
     //archivo.
 }
-*/
+
 void escribirGrafo(){ // escribe el grafo en el archivo
     // primero inserto el vertice y luego todos los arcos que tenga y asi sucesivamente
 
