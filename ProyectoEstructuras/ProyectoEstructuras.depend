@@ -396,16 +396,21 @@
 
 1478137054 c:\users\steven\estructurassegundoproyecto\sfml-2.4.0\include\sfml\graphics.hpp
 
-1479149119 source:c:\users\usuario\desktop\segundaprograestructuras\proyectoestructuras\main.cpp
+1479408090 source:c:\users\usuario\desktop\segundaprograestructuras\proyectoestructuras\main.cpp
 	<SFML/Graphics.hpp>
 	<string.h>
-	<iostream>
 	<iostream>
 	<stdlib.h>
 	<stdio.h>
 	<vector>
 	<queue>
 	<stack>
+	<string>
+	<sstream>
+	"windows.h"
+	<sstream>
+	<time.h>
+	"fstream"
 
 1470642834 c:\users\usuario\desktop\segundaprograestructuras\sfml-2.4.0\include\sfml\graphics.hpp
 
@@ -1382,10 +1387,9 @@
 	<string>
 	<vector>
 
-1479358267 source:f:\proyecto estructuras\proyectoestructuras\main.cpp
+1479423438 source:f:\proyecto estructuras\proyectoestructuras\main.cpp
 	<SFML/Graphics.hpp>
 	<string.h>
-	<iostream>
 	<iostream>
 	<stdlib.h>
 	<stdio.h>
@@ -1393,8 +1397,11 @@
 	<queue>
 	<stack>
 	<string>
+	<sstream>
 	"windows.h"
 	<sstream>
+	<time.h>
+	"fstream"
 
 1479323934 f:\proyecto estructuras\sfml-2.4.0\include\sfml\graphics.hpp
 	<SFML/Window.hpp>
