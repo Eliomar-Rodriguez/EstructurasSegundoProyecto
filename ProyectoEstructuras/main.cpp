@@ -17,7 +17,8 @@ using namespace std;
 
 #define INF 99
 #define tamano 33               // tamano maximo de vertices
-#define nodo pair < int,int >
+#define nodo pair < int, int >
+
 
 int matAdy [tamano][tamano];
 int numCiudad = 0;
@@ -39,8 +40,11 @@ struct vertice{
     int x,y;
     struct vertice *sigV;
     struct arco *sigA;
-    bool visitado;
+    bool visitadoP1;
+    bool visitadoP2;
 }*grafo,*ini,*punteroGrafo; // iniGraCarg es el inicio del grafo cargado del archivo
+
+
 
 
 struct par {
@@ -51,20 +55,24 @@ struct par {
 
 struct cmp {
     bool operator() ( const nodo &a , const nodo &b ) {
-        return a.second > b.second;
+        return a.first > b.second;
     }
 };
 
-priority_queue< nodo , vector<nodo> , cmp > Q; //priority queue propia del c++, usamos el comparador definido para que el de menor valor este en el tope
-bool visitado[tamano];      //para vértices visitados
-par distancia[tamano];
+priority_queue< nodo , vector<nodo> , cmp > V1; //priority queue propia del c++, usamos el comparador definido para que el de menor valor este en el tope
+priority_queue< nodo , vector<nodo> , cmp > V2;
+bool visitadoV1[tamano];      //para vértices visitados
+bool visitadoV2[tamano];
+par distancia1[tamano];
+par distancia2[tamano];
 
 void insertarCiudad(char pciudad[], int x,int y){
     string ciudad = pciudad;
     struct vertice *nnv = new vertice();
 
     nnv->ciudad = ciudad;
-    nnv->visitado =false;
+    nnv->visitadoP1 =false;
+    nnv->visitadoP2 =false;
     nnv->numeroCiudad = numCiudad;
     numCiudad=numCiudad+1;
     nnv->sigV=NULL;
@@ -94,9 +102,12 @@ struct vertice* buscar(char pciudad[]){
 
 void inicializar(){
     for( int i = 0 ; i <= tamano ; ++i ){
-        distancia[ i ].valorDistancia = INF;
-        distancia[ i ].verticeOrigen = INF;
-        visitado[ i ] = false; //inicializamos todos los vértices como no visitados
+        distancia1[ i ].valorDistancia = INF;
+        distancia1[ i ].verticeOrigen = INF;
+        distancia2[ i ].valorDistancia = INF;
+        distancia2[ i ].verticeOrigen = INF;
+        visitadoV1[ i ] = false; //inicializamos todos los vértices como no visitados
+        visitadoV2[ i ] = false;
     }
 }
 
@@ -155,7 +166,7 @@ void leerGrafo(){ // como identifico que estoy leyendo?
     //archivo.
 }
 */
-void escribirGrafo(){
+void escribirGrafo(){ // escribe el grafo en el archivo
     // primero inserto el vertice y luego todos los arcos que tenga y asi sucesivamente
 
     struct vertice *tempV=ini;
@@ -182,31 +193,32 @@ void escribirGrafo(){
     }
     archivo.close();
 }
-void Dijkstra(int inicio){
+
+void Dijkstra(int inicioV1){
+
 	inicializar();
-	int x = Q.size();
-	Q.push( nodo(inicio,0)); //Insertamos el vértice inicial en la Cola de Prioridad
-
-    distancia[ inicio ].valorDistancia = 0;      //Este paso es importante, inicializamos la distancia del inicial como 0
+	int x = V1.size();
+	V1.push( nodo(inicioV1,0)); //Insertamos el vértice inicial en la Cola de Prioridad
+    distancia1[ inicioV1 ].valorDistancia = 0;      //Este paso es importante, inicializamos la distancia del inicial como 0
     int actual , adyacente , peso;
-    while( !Q.empty() ){                   //Mientras cola no este vacia
+    while( !V1.empty() ){                   //Mientras cola no este vacia
 
-        actual = Q.top().first;            //Obtengo de la cola el nodo con menor peso, en un comienzo será el inicial
-        Q.pop();                           //Sacamos el elemento de la cola
-        if( visitado[ actual ] )
+        actual = V1.top().first;            //Obtengo de la cola el nodo con menor peso, en un comienzo será el inicial
+        V1.pop();                           //Sacamos el elemento de la cola
+        if( visitadoV1[ actual ] )
 			continue; //Si el vértice actual ya fue visitado entonces sigo sacando elementos de la cola
 
-		visitado[ actual ] = true;         //Marco como visitado el vértice actual
+		visitadoV1[ actual ] = true;         //Marco como visitado el vértice actual
 
         for( int i = 0 ; i < tamano ; ++i ){ //reviso sus adyacentes del vertice actual
             if(matAdy[actual][i] != INF){
 	            peso = matAdy[actual][i]  ;        //peso de la arista que une actual con adyacente ( actual , adyacente )
-	            if( !visitado[ i ] ){        //si el vertice adyacente no fue visitado
+	            if( !visitadoV1[ i ] ){        //si el vertice adyacente no fue visitado
 
-	            	if( distancia[ actual ].valorDistancia + peso < distancia[ i ].valorDistancia ){
-				        distancia[ i ].valorDistancia = distancia[ actual ].valorDistancia + peso; //relajamos el vertice actualizando la distancia
-				        distancia[ i ].verticeOrigen = actual;
-				        Q.push( nodo( i , distancia[ i ].valorDistancia ) ); //agregamos adyacente a la cola de prioridad
+	            	if( distancia1[ actual ].valorDistancia + peso < distancia1[ i ].valorDistancia ){
+				        distancia1[ i ].valorDistancia = distancia1[ actual ].valorDistancia + peso; //relajamos el vertice actualizando la distancia
+				        distancia1[ i ].verticeOrigen = actual;
+				        V1.push( nodo( i , distancia1[ i ].valorDistancia ) ); //agregamos adyacente a la cola de prioridad
     				}
 				}
         	}
@@ -214,18 +226,51 @@ void Dijkstra(int inicio){
     }
 }
 
-//prueba
-void imprimirRutaCorta(int destino){
-    int dest = destino-1;
+void Dijkstra2(int inicioV2){
+	inicializar();
+	int x = V2.size(); //Insertamos el vértice inicial en la Cola de Prioridad
+    V2.push( nodo(inicioV2,0));      //Este paso es importante, inicializamos la distancia del inicial como 0
+    distancia2[ inicioV2 ].valorDistancia = 0;
+    int actual , adyacente , peso;
+    while( !V2.empty() ){                   //Mientras cola no este vacia
+
+        actual = V2.top().first;            //Obtengo de la cola el nodo con menor peso, en un comienzo será el inicial
+        V2.pop();                           //Sacamos el elemento de la cola
+        if( visitadoV2[ actual ] )
+			continue; //Si el vértice actual ya fue visitado entonces sigo sacando elementos de la cola
+
+		visitadoV2[ actual ] = true;         //Marco como visitado el vértice actual
+
+        for( int i = 0 ; i < tamano ; ++i ){ //reviso sus adyacentes del vertice actual
+            if(matAdy[actual][i] != INF){
+	            peso = matAdy[actual][i]  ;        //peso de la arista que une actual con adyacente ( actual , adyacente )
+	            if( !visitadoV2[ i ] ){        //si el vertice adyacente no fue visitado
+
+	            	if( distancia2[ actual ].valorDistancia + peso < distancia2[ i ].valorDistancia ){
+				        distancia2[ i ].valorDistancia = distancia2[ actual ].valorDistancia + peso; //relajamos el vertice actualizando la distancia
+				        distancia2[ i ].verticeOrigen = actual;
+				        V2.push( nodo( i , distancia2[ i ].valorDistancia ) ); //agregamos adyacente a la cola de prioridad
+				        //cout << V2.top().first<< endl;
+    				}
+				}
+        	}
+        }
+    }
+}
+void imprimirRutaCorta(int destinoF1, int destinoF2){
+    int dest1 = destinoF1-1;
+    int dest2 = destinoF2-1;
     stack<int> pila;
-    int dist=distancia[dest].valorDistancia;
-    while(dest != INF)
+    stack<int> pila2;
+    int dist1=distancia1[dest1].valorDistancia;
+    int dist2=distancia2[dest2].valorDistancia;
+    while(dest1 != INF)
     {
-        pila.push(dest);
-        dest= distancia[dest].verticeOrigen;
+        pila.push(dest1);
+        dest1= distancia1[dest1].verticeOrigen;
     }
 
-    cout <<endl<< "Ruta mas corta para llegar a " << destino << " desde el vertice inicial es:" << endl;
+    cout <<endl<< "Ruta mas corta para llegar a " << destinoF1 << " desde el vertice inicial es:" << endl;
     while(pila.size()!=0)
     {
         cout << pila.top()+1 ;
@@ -234,7 +279,24 @@ void imprimirRutaCorta(int destino){
             cout << " - ";
     }
     cout << endl;
-    cout << "Distancia total de la ruta: " << dist << endl;
+    cout << "Distancia total de la ruta: " << dist1 << endl;
+
+    while(dest2 != INF)
+    {
+        pila2.push(dest2);
+        dest2= distancia2[dest2].verticeOrigen;
+    }
+
+    cout <<endl<< "Ruta mas corta para llegar a " << destinoF2 << " desde el vertice es:" << endl;
+    while(pila2.size()!=0)
+    {
+        cout << pila2.top()+1 ;
+        pila2.pop();
+        if (pila2.size() != 0)
+            cout << " - ";
+    }
+    cout << endl;
+    cout << "Distancia total de la ruta: " << dist2 << endl;
 }
 
 void imprimirMatAdy(){
@@ -421,10 +483,14 @@ int main(int, char const**){
     cargarMatAdy();
     imprimirMatAdy();
 
+    Dijkstra(5);
+    //Dijkstra2(7);
+    imprimirRutaCorta(1,12);
+
     escribirGrafo();
 
     Dijkstra(5);
-    imprimirRutaCorta(13);
+//    imprimirRutaCorta(13);
     struct vertice * tempV = ini;
 
 /*==========================================================================================================*/
@@ -509,7 +575,7 @@ int main(int, char const**){
         //result = hola + winstl::int_to_string(contador);
         ////hola = hola + result;
         contador++;
-        cout<<result<<endl;
+        //cout<<result<<endl;
         // Process events
         sf::Event event;
         while (window.pollEvent(event))
@@ -549,12 +615,17 @@ int main(int, char const**){
 
 
         window.draw(titulo);
-        struct vertice * tem = grafo;
+
+        struct vertice * tem = ini;
+
         sf::Text ciudad(tem->ciudad, font, 18);
-        while (contador >=0){
+
+        //cout<<"fuente";
+        while (contador >=1){
             string numero;
+            //cout<<contador<<" - ";
             std::stringstream sstm;
-            sstm << contador << ") " << tem->ciudad;
+            sstm << contador << ") " << tem->ciudad; // concatenando
             numero = sstm.str();
             ciudad.setString(numero);
             ciudad.setPosition(6,pos); //donde tamano empieza en 18 y al final del ciclo de la ventana le sumo 18
@@ -564,6 +635,7 @@ int main(int, char const**){
             tem = tem ->sigV;
             contador--;
         }
+
         // Update the window
         window.display();
         contador = 32; // futuro contador para escribir todas las ciudade
