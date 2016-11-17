@@ -9,6 +9,9 @@
 #include<string>
 #include<sstream>
 #include "windows.h"
+#include <sstream>
+#include<time.h>
+#include "fstream"
 
 using namespace std;
 
@@ -16,16 +19,14 @@ using namespace std;
 #define tamano 33               // tamano maximo de vertices
 #define nodo pair < int,int >
 
-string todasCiudades[40],joder;
-char* buffer;
 int matAdy [tamano][tamano];
 int numCiudad = 0;
-int contador =0;
 
 int tamanoFuente = 38;
 
+int contador = 32;
 int pos = 18;
-
+fstream archivo("grafo.saiyajin", ios::in | ios::out |ios::binary | ios::trunc);
 struct arco {
     struct vertice *destino;
     int distancia;
@@ -39,7 +40,7 @@ struct vertice{
     struct vertice *sigV;
     struct arco *sigA;
     bool visitado;
-}*grafo,*ini;
+}*grafo,*ini,*punteroGrafo; // iniGraCarg es el inicio del grafo cargado del archivo
 
 
 struct par {
@@ -66,14 +67,22 @@ void insertarCiudad(char pciudad[], int x,int y){
     nnv->visitado =false;
     nnv->numeroCiudad = numCiudad;
     numCiudad=numCiudad+1;
-    nnv->sigV=grafo;
-    nnv->x = x;
+    nnv->sigV=NULL;
     nnv->y = y;
-    grafo = nnv;
+
+    if (grafo==NULL){
+        grafo = nnv;
+        ini = nnv;
+    }
+    else{
+        grafo->sigV = nnv;
+        grafo = nnv;
+    }
+    //grafo = nnv;
 
 }
 struct vertice* buscar(char pciudad[]){
-    struct vertice *tempV = grafo;
+    struct vertice *tempV = ini;
     while(tempV!=NULL){
         if(tempV->ciudad==pciudad)
             return tempV;
@@ -90,7 +99,6 @@ void inicializar(){
         visitado[ i ] = false; //inicializamos todos los vértices como no visitados
     }
 }
-
 
 void insertarRutas(char porigen[],char pdestino[], int pdistancia){
 
@@ -110,17 +118,15 @@ void insertarRutas(char porigen[],char pdestino[], int pdistancia){
     origen->sigA=nna;
 }
 
-
 void cargarMatAdy(){
-    struct vertice *tempV = grafo;
+    struct vertice *tempV = ini;
     struct arco *tempA;
 
-    for(int x = 0; x < tamano; x++){
+    for(int x = 0; x < tamano; x++){ // tamano por la cantidad de vertices de manera generica
         for(int y = 0; y < tamano; y++){
             matAdy[x][y]=INF;
         }
     }
-
     // cargar la matriz con datos del grafo
     while (tempV!=NULL){
         tempA=tempV->sigA;
@@ -131,7 +137,51 @@ void cargarMatAdy(){
         tempV=tempV->sigV;
     }
 }
+/*
+void leerGrafo(){ // como identifico que estoy leyendo?
+    struct vertice *nnV;
+    struct arco * nnA;
+    while(!archivo.eof()){
+        archivo.read(reinterpret_cast<char *> (&nnv), sizeof(vertice));
 
+        while (true){
+            fgetc(archivo);
+            archivo.read(reinterpret_cast<char *> (&nnv), sizeof(vertice));
+            if (sizeof(vertice)){
+
+            }
+        }
+    }
+    //archivo.
+}
+*/
+void escribirGrafo(){
+    // primero inserto el vertice y luego todos los arcos que tenga y asi sucesivamente
+
+    struct vertice *tempV=ini;
+    struct arco *tempA;
+    if (tempV==NULL){
+        cout<<"NULL"<<endl;
+    }
+    while(tempV!=NULL){
+        tempA = tempV->sigA;
+
+        archivo.seekg(0,ios::end);
+        archivo.write(reinterpret_cast<char *> (&tempV), sizeof(vertice));
+
+        //cout<<"estoy en ciclo de vertice"<<endl;
+        while(tempA!=NULL){
+            //cout<<"estoy en ciclo de arco"<<endl;
+
+            archivo.seekg(0,ios::end);
+            archivo.write(reinterpret_cast<char *> (&tempA), sizeof(arco));
+
+            tempA = tempA ->sigA;
+        }
+        tempV = tempV->sigV;
+    }
+    archivo.close();
+}
 void Dijkstra(int inicio){
 	inicializar();
 	int x = Q.size();
@@ -164,6 +214,7 @@ void Dijkstra(int inicio){
     }
 }
 
+//prueba
 void imprimirRutaCorta(int destino){
     int dest = destino-1;
     stack<int> pila;
@@ -231,58 +282,13 @@ void crearCiudades(){
     insertarCiudad("Manzanillo",569,464);
 }
 
-void enlazarCiudades()
-{
+void enlazarCiudades(){
     // insercion de los arcos en total son 46
-    insertarRutas("Los Chiles Frontera","Santa Rosa",304);
 
-    insertarRutas("Santa Rosa","Los Chiles Frontera",304);
-    insertarRutas("Santa Rosa","Liberia",73);
-    insertarRutas("Santa Rosa","Tamarindo",9);
-
-    insertarRutas("Tamarindo","Santa Rosa",9);
-    insertarRutas("Tamarindo","Liberia",78);
-    insertarRutas("Tamarindo","Playa Hermosa",72);
-
-    insertarRutas("Liberia","Tamarindo",78);
-    insertarRutas("Liberia","Santa Rosa",73);
-    insertarRutas("Liberia","Santa Cruz",58);
-    insertarRutas("Liberia","Tempisque",29);
-
-    insertarRutas("Playa Hermosa","Nicoya",74);
-    insertarRutas("Playa Hermosa","Cabuya",206);
-    insertarRutas("Playa Hermosa","Tamarindo",72);
-
-    insertarRutas("Nicoya","Playa Hermosa",74);
-    insertarRutas("Nicoya","Paquera",96);
-
-    insertarRutas("Cabuya","Playa Hermosa",206);
-    insertarRutas("Cabuya","Paquera",47);
-
-    insertarRutas("Paquera","Nicoya",96);
-    insertarRutas("Paquera","Cabuya",47);
-    insertarRutas("Paquera","Tempisque",150);
-    insertarRutas("Paquera","Manzanillo",105);
-
-    insertarRutas("Tempisque","Paquera",150);
-    insertarRutas("Tempisque","Liberia",29);
-    insertarRutas("Tempisque","Santa Cruz",85);
-
-    insertarRutas("Santa Cruz","Tempisque",85);
-    insertarRutas("Santa Cruz","Liberia",58);
-    insertarRutas("Santa Cruz","Fortuna",103);
-
-    insertarRutas("Fortuna","Santa Cruz",103);
-    insertarRutas("Fortuna","Sucre",52);
-
-    insertarRutas("Manzanillo","Palmares",93);
-    insertarRutas("Manzanillo","Paquera",105);
-
-    insertarRutas("Sucre","Fortuna",52);
-    insertarRutas("Sucre","Zarcero",22);
-
-    insertarRutas("Zarcero","Sucre",22);
-    insertarRutas("Zarcero","Naranjo",19);
+    insertarRutas("San Jose","Naranjo",47);
+    insertarRutas("San Jose","Alajuela",19);
+    insertarRutas("San Jose","Heredia",13);
+    insertarRutas("San Jose","Cartago",25);
 
     insertarRutas("Naranjo","Zarcero",19);
     insertarRutas("Naranjo","Palmares",12);
@@ -293,33 +299,41 @@ void enlazarCiudades()
     insertarRutas("Palmares","Naranjo",12);
     insertarRutas("Palmares","Jaco",83);
 
-    insertarRutas("Jaco","Palmares",83);
-    insertarRutas("Jaco","Parrita",42);
-
-    insertarRutas("Parrita","Jaco",42);
-    insertarRutas("Parrita","Quepos",30);
-
-    insertarRutas("Quepos","Parrita",30);
-    insertarRutas("Quepos","Perez Zeledon",87);
-    insertarRutas("Quepos","Golfito",179);
-
-    insertarRutas("Golfito","Quepos",179);
-    insertarRutas("Golfito","Perez Zeledon",193);
-    insertarRutas("Golfito","Ciudad Neily",31);
+    insertarRutas("Zarcero","Sucre",22);
+    insertarRutas("Zarcero","Naranjo",19);
 
     insertarRutas("Alajuela","Naranjo",19);
     insertarRutas("Alajuela","San Jose",19);
     insertarRutas("Alajuela","Heredia",41);
     insertarRutas("Alajuela","Sarapiqui",85);
 
-    insertarRutas("San Jose","Naranjo",47);
-    insertarRutas("San Jose","Alajuela",19);
-    insertarRutas("San Jose","Heredia",13);
-    insertarRutas("San Jose","Cartago",25);
+    insertarRutas("Sucre","Fortuna",52);
+    insertarRutas("Sucre","Zarcero",22);
 
-    insertarRutas("Cartago","San Jose",25);
-    insertarRutas("Cartago","Turrialba",66);
-    insertarRutas("Cartago","Perez Zeledon",124);
+    insertarRutas("Nicoya","Playa Hermosa",74);
+    insertarRutas("Nicoya","Paquera",96);
+
+    insertarRutas("Ciudad Neily","Golfito",31);
+    insertarRutas("Ciudad Neily","Perez Zeledon",194);
+
+    insertarRutas("Perez Zeledon","Quepos",87);
+    insertarRutas("Perez Zeledon","Golfito",193);
+    insertarRutas("Perez Zeledon","Ciudad Neily",194);
+    insertarRutas("Perez Zeledon","Cartago",124);
+
+    insertarRutas("Limon","Caño Blanco",94);
+    insertarRutas("Limon","Guapiles",95);
+    insertarRutas("Limon","Turrialba",119);
+    insertarRutas("Limon","Talamanca",239);
+    insertarRutas("Limon","Sixaola",92);
+
+    insertarRutas("Guapiles","Caño Blanco",71);
+    insertarRutas("Guapiles","Limon",95);
+    insertarRutas("Guapiles","Sarapiqui",49);
+
+    insertarRutas("Santa Rosa","Los Chiles Frontera",304);
+    insertarRutas("Santa Rosa","Liberia",73);
+    insertarRutas("Santa Rosa","Tamarindo",9);
 
     insertarRutas("Heredia","Alajuela",41);
     insertarRutas("Heredia","San Jose",13);
@@ -329,48 +343,93 @@ void enlazarCiudades()
     insertarRutas("Sarapiqui","Alajuela",85);
     insertarRutas("Sarapiqui","Guapiles",49);
 
-    insertarRutas("Perez Zeledon","Quepos",87);
-    insertarRutas("Perez Zeledon","Golfito",193);
-    insertarRutas("Perez Zeledon","Ciudad Neily",194);
-    insertarRutas("Perez Zeledon","Cartago",124);
+    insertarRutas("Talamanca","Limon",239);
+    insertarRutas("Talamanca","Turrialba",155);
 
-    insertarRutas("Ciudad Neily","Golfito",31);
-    insertarRutas("Ciudad Neily","Perez Zeledon",194);
+    insertarRutas("Sixaola","Limon",92);
+
+    insertarRutas("Santa Cruz","Tempisque",85);
+    insertarRutas("Santa Cruz","Liberia",58);
+    insertarRutas("Santa Cruz","Fortuna",103);
+
+    insertarRutas("Los Chiles Frontera","Santa Rosa",304);
+
+    insertarRutas("Cartago","San Jose",25);
+    insertarRutas("Cartago","Turrialba",66);
+    insertarRutas("Cartago","Perez Zeledon",124);
 
     insertarRutas("Turrialba","Cartago",66);
     insertarRutas("Turrialba","Talamanca",155);
     insertarRutas("Turrialba","Limon",119);
 
-    insertarRutas("Guapiles","Caño Blanco",71);
-    insertarRutas("Guapiles","Limon",95);
-    insertarRutas("Guapiles","Sarapiqui",49);
+    insertarRutas("Jaco","Palmares",83);
+    insertarRutas("Jaco","Parrita",42);
+
+    insertarRutas("Quepos","Parrita",30);
+    insertarRutas("Quepos","Perez Zeledon",87);
+    insertarRutas("Quepos","Golfito",179);
+
+    insertarRutas("Golfito","Quepos",179);
+    insertarRutas("Golfito","Perez Zeledon",193);
+    insertarRutas("Golfito","Ciudad Neily",31);
+
+    insertarRutas("Parrita","Jaco",42);
+    insertarRutas("Parrita","Quepos",30);
+
+    insertarRutas("Paquera","Nicoya",96);
+    insertarRutas("Paquera","Cabuya",47);
+    insertarRutas("Paquera","Tempisque",150);
+    insertarRutas("Paquera","Manzanillo",105);
+
+    insertarRutas("Playa Hermosa","Nicoya",74);
+    insertarRutas("Playa Hermosa","Cabuya",206);
+    insertarRutas("Playa Hermosa","Tamarindo",72);
+
+    insertarRutas("Tamarindo","Santa Rosa",9);
+    insertarRutas("Tamarindo","Liberia",78);
+    insertarRutas("Tamarindo","Playa Hermosa",72);
+
+    insertarRutas("Liberia","Tamarindo",78);
+    insertarRutas("Liberia","Santa Rosa",73);
+    insertarRutas("Liberia","Santa Cruz",58);
+    insertarRutas("Liberia","Tempisque",29);
+
+    insertarRutas("Tempisque","Paquera",150);
+    insertarRutas("Tempisque","Liberia",29);
+    insertarRutas("Tempisque","Santa Cruz",85);
+
+    insertarRutas("Cabuya","Playa Hermosa",206);
+    insertarRutas("Cabuya","Paquera",47);
 
     insertarRutas("Caño Blanco","Guapiles",71);
     insertarRutas("Caño Blanco","Limon",94);
 
-    insertarRutas("Limon","Caño Blanco",94);
-    insertarRutas("Limon","Guapiles",95);
-    insertarRutas("Limon","Turrialba",119);
-    insertarRutas("Limon","Talamanca",239);
-    insertarRutas("Limon","Sixaola",92);
+    insertarRutas("Fortuna","Santa Cruz",103);
+    insertarRutas("Fortuna","Sucre",52);
 
-    insertarRutas("Sixaola","Limon",92);
-
-    insertarRutas("Talamanca","Limon",239);
-    insertarRutas("Talamanca","Turrialba",155);
+    insertarRutas("Manzanillo","Palmares",93);
+    insertarRutas("Manzanillo","Paquera",105);
 }
 
-int main(int, char const**)
-{
+int main(int, char const**){
+    // crear grafo para luego cargarlo al archivo
     crearCiudades();
     enlazarCiudades();
-    cargarMatAdy();
 
+    // cargar grafo desde archivo
+
+    cargarMatAdy();
     imprimirMatAdy();
+
+    escribirGrafo();
+
     Dijkstra(5);
     imprimirRutaCorta(13);
     struct vertice * tempV = ini;
 
+/*==========================================================================================================*/
+/*=====================                         PARTE GRAFICA                          =====================*/
+/*==========================================================================================================*/
     // Create the main window
     sf::RenderWindow window(sf::VideoMode(1366, 768), "Waze - TEC");
 
@@ -410,8 +469,8 @@ int main(int, char const**)
     /////////////////////////////////////////////////////////////
 //Dibuja el primer Grafo (el circulo)
 ////////////////////////////////////////////////////////////
-
-    /*sf::CircleShape firstGraph(7); // el 7 es el tamano de los vertices en pantalla
+/*
+    sf::CircleShape firstGraph(7); // el 7 es el tamano de los vertices en pantalla
     firstGraph.setFillColor(sf::Color::Blue);
     firstGraph.setPosition(811, 344); // ubicacion en pantalla
 */
@@ -466,31 +525,6 @@ int main(int, char const**)
             }
         }
 
-        /*if(contador <33){
-
-            sf::Text ciudad(tempV->ciudad, font, 18);
-            ciudad.setPosition(6,tamanoFuente); //donde tamano empieza en 18 y al final del ciclo de la ventana le sumo 18
-            ciudad.setFillColor(sf::Color::Black);
-            contador++;
-            window.draw(ciudad);
-            tamanoFuente += 20;
-            //..add(ciudad);
-            tempV = tempV ->sigV;
-        }*/
-
-        if (!tempV==NULL){
-            ciudad.setFillColor(sf::Color::Black);
-            ciudad.setCharacterSize(18);
-            //ciudad.setFont(font);
-            ciudad.setPosition(9,tamanoFuente);
-            ciudad.setString(tempV->ciudad);
-
-            tempV = tempV ->sigV;
-            tamanoFuente += 20;
-
-            window.draw(ciudad);
-        }
-
         // Clear screen
         window.clear(sf::Color(153,217,234));
 
@@ -499,17 +533,17 @@ int main(int, char const**)
 
         window.draw(toolBar);
 
-        //window.draw(lines);
+        //ventana.draw(lines);
 
         // este draw solo se hace una vez
 
         // Draw the string
 
-        //window.draw(titulo);
+        //ventana.draw(titulo);
 
 
         // Update the window
-        //window.display();
+        //ventana.display();
         //cont++; // futuro contador para escribir todas las ciudades
 
 
@@ -517,23 +551,26 @@ int main(int, char const**)
         window.draw(titulo);
         struct vertice * tem = grafo;
         sf::Text ciudad(tem->ciudad, font, 18);
-        while (contador <=32){
-            ciudad.setString("* " + tem->ciudad);
+        while (contador >=0){
+            string numero;
+            std::stringstream sstm;
+            sstm << contador << ") " << tem->ciudad;
+            numero = sstm.str();
+            ciudad.setString(numero);
             ciudad.setPosition(6,pos); //donde tamano empieza en 18 y al final del ciclo de la ventana le sumo 18
             ciudad.setFillColor(sf::Color::Black);
             window.draw(ciudad);
-            //window.display();
             pos += 20;
             tem = tem ->sigV;
-            //Sleep(100);
-            contador++;
-            //window.display();
+            contador--;
         }
         // Update the window
         window.display();
-        contador = 0; // futuro contador para escribir todas las ciudade
+        contador = 32; // futuro contador para escribir todas las ciudade
         pos = 18;
     }
 
     return EXIT_SUCCESS;
 }
+
+
