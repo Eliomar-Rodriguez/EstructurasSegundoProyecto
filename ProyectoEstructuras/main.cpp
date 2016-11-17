@@ -300,15 +300,39 @@ void imprimirRutaCorta(int destinoF1, int destinoF2){
     cout << endl;
     cout << "Distancia total de la ruta: " << dist2 << endl;
 }
-
-void imprimirMatAdy(){
-	for(int i=0; i< tamano; i++){
-		for(int j= 0; j < tamano; j++)
-			cout<<matAdy[i][j]<<"    ";
-		cout<<endl;
-	}
+string cargarNombre(int pos){
+    vertice* aux;
+    aux=grafo;
+    if (pos>tamano){
+        return "Invalido";
+    }
+    for (int x=0;x<tamano-1-pos;x++){
+        aux=aux->sigV;
+    }
+    return aux->ciudad;
 }
-
+void imprimirMatAdy(){
+    int cont=0;
+    string nombres [tamano]={};
+    vertice* aux;
+    aux=grafo;
+    while (aux!=NULL){
+        nombres[32-cont]=aux->ciudad;
+        aux=aux->sigV;
+        cont++;
+    }
+    cont=0;
+	for(int i=0; i< tamano; i++){
+        cout<<endl<<"Vertice "<<i<<", "<<cargarNombre(i)<<endl;
+		for(int j= 0; j < tamano; j++){
+            if (matAdy[i][j]!=99){
+                cout<<j<<": "<<matAdy[i][j]<<" "<<endl;
+                cont++;
+            }
+		}
+	}
+	cout<<endl<<cont<<" arcos en total, "<<tamano<<" vertices"<<endl;
+}
 void crearCiudades(){
     // 33 ciudades
     insertarCiudad("San Jose",902,404);
