@@ -35,7 +35,7 @@ struct arco {
 };
 
 struct vertice{
-    string ciudad;
+    char ciudad[100];
     int numeroCiudad;  // cada ciudad tiene un numero de 0 a 32
     int x,y,cantidadArcos;
     struct vertice *sigV;
@@ -79,11 +79,11 @@ bool* visitadoV2=new bool[tamano];
 par* distancia1=new par[tamano];
 par* distancia2=new par[tamano];
 
-void insertarCiudad(char pciudad[], int x,int y){
+void insertarCiudad(char pciudad[100], int x,int y){
     string ciudad = pciudad;
     struct vertice *nnv = new vertice();
 
-    nnv->ciudad = ciudad;
+    strcpy(nnv->ciudad,pciudad);
     nnv->visitadoP1 =false;
     nnv->visitadoP2 =false;
     nnv->numeroCiudad = numCiudad;
@@ -182,12 +182,12 @@ char* tochar(string x){
 }
 void leerGrafo(){ // como identifico que estoy leyendo?
 
-    struct vertice *tempV;
+    struct vertice *tempV=ini;
     struct arco *tempA;
     grafo=NULL;
     ini=NULL;
     archivo.seekg(0,ios::beg);
-    tamano=0;
+    tamano=31;
     archivo.read(reinterpret_cast<char *> (&tamano), sizeof(int));
     cout<<tamano<<endl;
     char* charx;
@@ -197,6 +197,7 @@ void leerGrafo(){ // como identifico que estoy leyendo?
         cout<<tempV->ciudad<<"-"<<tempV->x<<"-"<<tempV->y<<"-"<<tempV->numeroCiudad<<"-"<<tempV->cantidadArcos<<endl;
         charx=tochar(tempV->ciudad);
         insertarCiudad(charx,tempV->x,tempV->y);
+        z=0;
     }
     while(!archivo.eof()){
         archivo.read(reinterpret_cast<char *> (&tempA), sizeof(arco));
@@ -222,7 +223,8 @@ void escribirGrafo(){ // escribe el grafo en el archivo
     char* charx;
     char* chary;
     while(tempV!=NULL){
-        cout<<tempV->ciudad<<"-"<<tempV->x<<"-"<<tempV->y<<"-"<<tempV->numeroCiudad<<"-"<<tempV->cantidadArcos<<endl;
+        archivo.seekg(0,ios::end);
+        cout<<tempV->ciudad<<"-"<<tempV->x<<"-"<<tempV->y<<"-"<<tempV->numeroCiudad<<"-"<<tempV->cantidadArcos<<sizeof(vertice)<<endl;
         archivo.write(reinterpret_cast<char *> (&tempV), sizeof(vertice));
         tempV = tempV->sigV;
     }
@@ -230,6 +232,7 @@ void escribirGrafo(){ // escribe el grafo en el archivo
     while(tempV!=NULL){
         tempA=tempV->sigA;
         while(tempA!=NULL){
+            archivo.seekg(0,ios::end);
             cout<<tempA->storigen<<"-"<<tempA->stdestino<<"-"<<tempA->distancia<<endl;
             archivo.write(reinterpret_cast<char *> (&tempA), sizeof(vertice));
             tempA = tempA ->sigA;
@@ -545,7 +548,8 @@ int main(int, char const**){
 
     cargarMatAdy();
     imprimirMatAdy();
-
+    escribirGrafo();
+    leerGrafo();
     Dijkstra(5);
     //Dijkstra2(7);
     imprimirRutaCorta(1,12);
