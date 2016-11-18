@@ -173,19 +173,39 @@ void cargarMatAdy(){
         tempV=tempV->sigV;
     }
 }
-void leerGrafo(){ // como identifico que estoy leyendo?
-    struct vertice *nnV;
-    struct arco * nnA;
-    archivo.seekg(0,ios::beg);
-
-    while(!archivo.eof()){
-        archivo.read(reinterpret_cast<char *> (&nnV), sizeof(vertice));
-        ini=nnV;
-        for(int i=0; i<nnV->cantidadArcos; ){
-            archivo.read(reinterpret_cast<char *> (&nnA), sizeof(vertice));
-
-        }
+char* tochar(string x){
+    char* y=new char[100]();
+    for (int z=0;z<x.size();z++){
+        y[z]=x[z];
     }
+    return y;
+}
+void leerGrafo(){ // como identifico que estoy leyendo?
+
+    struct vertice *tempV;
+    struct arco *tempA;
+    grafo=NULL;
+    ini=NULL;
+    archivo.seekg(0,ios::beg);
+    tamano=0;
+    archivo.read(reinterpret_cast<char *> (&tamano), sizeof(int));
+    cout<<tamano<<endl;
+    char* charx;
+    char* chary;
+    for (int z=0;z<tamano;z++){
+        archivo.read(reinterpret_cast<char *> (&tempV), sizeof(vertice));
+        cout<<tempV->ciudad<<"-"<<tempV->x<<"-"<<tempV->y<<"-"<<tempV->numeroCiudad<<"-"<<tempV->cantidadArcos<<endl;
+        charx=tochar(tempV->ciudad);
+        insertarCiudad(charx,tempV->x,tempV->y);
+    }
+    while(!archivo.eof()){
+        archivo.read(reinterpret_cast<char *> (&tempA), sizeof(arco));
+        cout<<tempA->storigen<<"-"<<tempA->stdestino<<"-"<<tempA->distancia<<endl;
+        charx=tochar(tempA->storigen);
+        chary=tochar(tempA->stdestino);
+        insertarRutas(charx,chary,tempA->distancia);
+    }
+    calculartamano();
     //archivo.
 }
 
@@ -197,24 +217,25 @@ void escribirGrafo(){ // escribe el grafo en el archivo
     if (tempV==NULL){
         cout<<"NULL"<<endl;
     }
+    archivo.seekg(0,ios::end);
+    archivo.write(reinterpret_cast<char *> (&tamano), sizeof(int));
+    char* charx;
+    char* chary;
     while(tempV!=NULL){
-        tempA = tempV->sigA;
-
-        archivo.seekg(0,ios::end);
+        cout<<tempV->ciudad<<"-"<<tempV->x<<"-"<<tempV->y<<"-"<<tempV->numeroCiudad<<"-"<<tempV->cantidadArcos<<endl;
         archivo.write(reinterpret_cast<char *> (&tempV), sizeof(vertice));
-
-        //cout<<"estoy en ciclo de vertice"<<endl;
+        tempV = tempV->sigV;
+    }
+    tempV=ini;
+    while(tempV!=NULL){
+        tempA=tempV->sigA;
         while(tempA!=NULL){
-            //cout<<"estoy en ciclo de arco"<<endl;
-
-            archivo.seekg(0,ios::end);
-            archivo.write(reinterpret_cast<char *> (&tempA), sizeof(arco));
-
+            cout<<tempA->storigen<<"-"<<tempA->stdestino<<"-"<<tempA->distancia<<endl;
+            archivo.write(reinterpret_cast<char *> (&tempA), sizeof(vertice));
             tempA = tempA ->sigA;
         }
         tempV = tempV->sigV;
     }
-    archivo.close();
 }
 
 void Dijkstra(int inicioV1){
@@ -242,38 +263,6 @@ void Dijkstra(int inicioV1){
 				        distancia1[ i ].valorDistancia = distancia1[ actual ].valorDistancia + peso; //relajamos el vertice actualizando la distancia
 				        distancia1[ i ].verticeOrigen = actual;
 				        V1.push( nodo( i , distancia1[ i ].valorDistancia ) ); //agregamos adyacente a la cola de prioridad
-    				}
-				}
-        	}
-        }
-    }
-}
-
-void Dijkstra2(int inicioV2){
-	inicializar();
-	int x = V2.size(); //Insertamos el vértice inicial en la Cola de Prioridad
-    V2.push( nodo(inicioV2,0));      //Este paso es importante, inicializamos la distancia del inicial como 0
-    distancia2[ inicioV2 ].valorDistancia = 0;
-    int actual , adyacente , peso;
-    while( !V2.empty() ){                   //Mientras cola no este vacia
-
-        actual = V2.top().first;            //Obtengo de la cola el nodo con menor peso, en un comienzo será el inicial
-        V2.pop();                           //Sacamos el elemento de la cola
-        if( visitadoV2[ actual ] )
-			continue; //Si el vértice actual ya fue visitado entonces sigo sacando elementos de la cola
-
-		visitadoV2[ actual ] = true;         //Marco como visitado el vértice actual
-
-        for( int i = 0 ; i < tamano ; ++i ){ //reviso sus adyacentes del vertice actual
-            if(matAdy[actual][i] != INF){
-	            peso = matAdy[actual][i]  ;        //peso de la arista que une actual con adyacente ( actual , adyacente )
-	            if( !visitadoV2[ i ] ){        //si el vertice adyacente no fue visitado
-
-	            	if( distancia2[ actual ].valorDistancia + peso < distancia2[ i ].valorDistancia ){
-				        distancia2[ i ].valorDistancia = distancia2[ actual ].valorDistancia + peso; //relajamos el vertice actualizando la distancia
-				        distancia2[ i ].verticeOrigen = actual;
-				        V2.push( nodo( i , distancia2[ i ].valorDistancia ) ); //agregamos adyacente a la cola de prioridad
-				        //cout << V2.top().first<< endl;
     				}
 				}
         	}
@@ -342,6 +331,7 @@ void imprimirMatAdy(){
         aux=aux->sigV;
         cont++;
     }
+    cout<<cont<<endl;
     cont=0;
 	for(int i=0; i< tamano; i++){
         cout<<endl<<"Vertice "<<i<<", "<<cargarNombre(i)<<endl;
@@ -352,7 +342,7 @@ void imprimirMatAdy(){
             }
 		}
 	}
-	cout<<endl<<cont<<" arcos en total, "<<tamano<<" vertices"<<endl;
+	cout<<endl<<cont/2<<" arcos en total, "<<tamano<<" vertices"<<endl;
 }
 void crearCiudades(){
     // 33 ciudades
@@ -368,8 +358,7 @@ void crearCiudades(){
     insertarCiudad("Limon",1232,382);
     insertarCiudad("Guapiles",1014,310);
     insertarCiudad("Santa Rosa",375,272);
-    insertarCiudad("Heredia",770,284);
-    insertarCiudad("Sarapiqui",787,274);
+    insertarCiudad("Puerto Viejo",924,246);
     insertarCiudad("Talamanca",1040,525);
     insertarCiudad("Sixaola",1361,516);
     insertarCiudad("Santa Cruz",442,280);
@@ -396,7 +385,7 @@ void enlazarCiudades(){
 
     insertarRutas("San Jose","Naranjo",47);
     insertarRutas("San Jose","Alajuela",19);
-    insertarRutas("San Jose","Heredia",13);
+    insertarRutas("San Jose","Puerto Viejo",86);
     insertarRutas("San Jose","Cartago",25);
 
     insertarRutas("Naranjo","Zarcero",19);
@@ -413,8 +402,7 @@ void enlazarCiudades(){
 
     insertarRutas("Alajuela","Naranjo",19);
     insertarRutas("Alajuela","San Jose",19);
-    insertarRutas("Alajuela","Heredia",41);
-    insertarRutas("Alajuela","Sarapiqui",85);
+    insertarRutas("Alajuela","Puerto Viejo",80);
 
     insertarRutas("Sucre","Fortuna",52);
     insertarRutas("Sucre","Zarcero",22);
@@ -438,18 +426,12 @@ void enlazarCiudades(){
 
     insertarRutas("Guapiles","Caño Blanco",71);
     insertarRutas("Guapiles","Limon",95);
-    insertarRutas("Guapiles","Sarapiqui",49);
 
     insertarRutas("Santa Rosa","Los Chiles Frontera",304);
     insertarRutas("Santa Rosa","Liberia",73);
 
-    insertarRutas("Heredia","Alajuela",41);
-    insertarRutas("Heredia","San Jose",13);
-    insertarRutas("Heredia","Sarapiqui",85);
-
-    insertarRutas("Sarapiqui","Heredia",85);
-    insertarRutas("Sarapiqui","Alajuela",85);
-    insertarRutas("Sarapiqui","Guapiles",49);
+    insertarRutas("Puerto Viejo","Alajuela",80);
+    insertarRutas("Puerto Viejo","San Jose",86);
 
     insertarRutas("Talamanca","Limon",239);
     insertarRutas("Talamanca","Turrialba",155);
@@ -567,9 +549,6 @@ int main(int, char const**){
     Dijkstra(5);
     //Dijkstra2(7);
     imprimirRutaCorta(1,12);
-
-    escribirGrafo();
-
     Dijkstra(5);
 //    imprimirRutaCorta(13);
     struct vertice * tempV = ini;
