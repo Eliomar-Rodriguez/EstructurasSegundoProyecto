@@ -25,7 +25,6 @@ int tamanoFuente = 38;
 sf::RenderWindow window(sf::VideoMode(1408, 970), "Waze - TEC");
 int contador = 32;
 int pos = 18;
-fstream archivo("grafo.txt", ios::in | ios::out |ios::binary);
 sf::Font font;
 struct arco {
     struct vertice *destino;
@@ -198,8 +197,14 @@ char* tochar(string x){
     }
     return y;
 }
-void leerGrafo(){ // como identifico que estoy leyendo?
-
+bool leerGrafo(char nombre[30]){ // como identifico que estoy leyendo?
+    std::ifstream existe(nombre);
+    if (!existe)
+    {
+        std::cout << "Fichero no encontrado" << std::endl;
+        return false;
+    }
+    fstream archivo(nombre, ios::in | ios::out |ios::binary);
     struct vertice tempV;
     struct arco tempA;
     grafo=NULL;
@@ -219,6 +224,7 @@ void leerGrafo(){ // como identifico que estoy leyendo?
     }
     calculartamano();
     //archivo.
+    return true;
 }
 
 void escribirGrafo(){ // escribe el grafo en el archivo
@@ -319,95 +325,23 @@ stack<int> Dijkstra(int origen,int destino,stack<int> baneados){
             cout<<a+1<<": "<<tabla[a][0]<<" - "<<"INF"<<" * "<<tabla[a][2]<<endl;
         }
     }
-    stack<int> aux;
     actual=destino;
-    aux.push(actual);
+    camino.push(actual);
     while(actual!=origen){
         actual=tabla[actual][1];
-        aux.push(actual);
-    }
-    while(!aux.empty()){
-        cout<<aux.top()<<"-";
-        camino.push(aux.top());
-        aux.pop();
+        if (actual==99){
+            cout<<"Ha ocurrido un error de accesibilidad en el grafo"<<endl;
+            stack<int> negativo;
+            return negativo;
+        }
+        camino.push(actual);
+        cout<<camino.top()<<"-";
     }
     cout<<endl;
     return camino;
 }
-//void Dijkstra(int inicioV1){
-//
-//	inicializar();
-//	int x = V1.size();
-//	V1.push( nodo(inicioV1,0)); //Insertamos el vértice inicial en la Cola de Prioridad
-//    distancia1[ inicioV1 ].valorDistancia = 0;      //Este paso es importante, inicializamos la distancia del inicial como 0
-//    int actual , adyacente , peso;
-//    while( !V1.empty() ){                   //Mientras cola no este vacia
-//
-//        actual = V1.top().first;            //Obtengo de la cola el nodo con menor peso, en un comienzo será el inicial
-//        V1.pop();                           //Sacamos el elemento de la cola
-//        if( visitadoV1[ actual ] )
-//			continue; //Si el vértice actual ya fue visitado entonces sigo sacando elementos de la cola
-//
-//		visitadoV1[ actual ] = true;         //Marco como visitado el vértice actual
-//
-//        for( int i = 0 ; i < tamano ; ++i ){ //reviso sus adyacentes del vertice actual
-//            if(matAdy[actual][i] != INF){
-//	            peso = matAdy[actual][i]  ;        //peso de la arista que une actual con adyacente ( actual , adyacente )
-//	            if( !visitadoV1[ i ] ){        //si el vertice adyacente no fue visitado
-//
-//	            	if( distancia1[ actual ].valorDistancia + peso < distancia1[ i ].valorDistancia ){
-//				        distancia1[ i ].valorDistancia = distancia1[ actual ].valorDistancia + peso; //relajamos el vertice actualizando la distancia
-//				        distancia1[ i ].verticeOrigen = actual;
-//				        V1.push( nodo( i , distancia1[ i ].valorDistancia ) ); //agregamos adyacente a la cola de prioridad
-//    				}
-//				}
-//        	}
-//        }
-//    }
-//}
-//void imprimirRutaCorta(int destinoF1, int destinoF2){
-//    int dest1 = destinoF1-1;
-//    int dest2 = destinoF2-1;
-//    stack<int> pila;
-//    stack<int> pila2;
-//    int dist1=distancia1[dest1].valorDistancia;
-//    int dist2=distancia2[dest2].valorDistancia;
-//    while(dest1 != INF)
-//    {
-//        pila.push(dest1);
-//        dest1= distancia1[dest1].verticeOrigen;
-//    }
-//
-//    cout <<endl<< "Ruta mas corta para llegar a " << destinoF1 << " desde el vertice inicial es:" << endl;
-//    while(pila.size()!=0)
-//    {
-//        cout << pila.top()+1 ;
-//        pila.pop();
-//        if (pila.size() != 0)
-//            cout << " - ";
-//    }
-//    cout << endl;
-//    cout << "Distancia total de la ruta: " << dist1 << endl;
-//
-//    while(dest2 != INF)
-//    {
-//        pila2.push(dest2);
-//        dest2= distancia2[dest2].verticeOrigen;
-//    }
-//
-//    cout <<endl<< "Ruta mas corta para llegar a " << destinoF2 << " desde el vertice es:" << endl;
-//    while(pila2.size()!=0)
-//    {
-//        cout << pila2.top()+1 ;
-//        pila2.pop();
-//        if (pila2.size() != 0)
-//            cout << " - ";
-//    }
-//    cout << endl;
-//    cout << "Distancia total de la ruta: " << dist2 << endl;
-//}
+
 void crearCiudades(){
-    // 33 ciudades
     insertarCiudad("San Jose",902,404);
     insertarCiudad("Naranjo",811,344);
     insertarCiudad("Palmares",730,350);
@@ -556,18 +490,17 @@ void enlazarCiudades(){
     insertarRutas("Manzanillo","Palmares",93);
     insertarRutas("Manzanillo","Paquera",105);
 }
-void dibujarruta(stack<int> pila){
-    while(pila.size()!=1)
+void dibujarruta(stack<int> pila,sf::Color color,int desp){
+    while(pila.size()>1)
     {
         int origen=pila.top();
         pila.pop();
         int destino=pila.top();
         sf::Vertex line[] =
         {
-            sf::Vertex(sf::Vector2f(buscar(origen)->x+10, buscar(origen)->y+10)),
-            sf::Vertex(sf::Vector2f(buscar(destino)->x+10, buscar(destino)->y+10))
+            sf::Vertex(sf::Vector2f(buscar(origen)->x+10+desp, buscar(origen)->y+10+desp)),
+            sf::Vertex(sf::Vector2f(buscar(destino)->x+10+desp, buscar(destino)->y+10+desp))
         };
-        sf::Color color=sf::Color::Red;
         line[1].color=color;
         line[0].color=color;
         window.draw(line, 2, sf::Lines);
@@ -626,21 +559,73 @@ void dibujarvertices(){
         window.draw(texto);
         grafo=grafo->sigV;
         cont++;
+        }
     }
+void dibujarnombres(){
+    stack<int> baneado,pila;
+    contador=tamano;
+    pos = 18;
+    struct vertice * tem = ini;
+    sf::Text ciudad(tem->ciudad, font, 18);
+    while (contador >=1){
+        pos += 22;
+        string numero;
+        //cout<<contador<<" - ";
+        std::stringstream sstm;
+        sstm << tamano+1-contador << ") " << tem->ciudad; // concatenando
+        numero = sstm.str();
+        ciudad.setString(numero);
+        ciudad.setPosition(18,pos); //donde tamano empieza en 18 y al final del ciclo de la ventana le sumo 18
+        ciudad.setFillColor(sf::Color::Black);
+        window.draw(ciudad);
+        tem = tem ->sigV;
+        contador--;
     }
+}
 int main(int, char const**){
+    stack<int> baneado,baneado2,pila,pila2;
     font.loadFromFile("comic.ttf");
     // crear grafo para luego cargarlo al archivo
-    crearCiudades();
-    enlazarCiudades();
-
-
+    bool y=true;
+    bool jugadores;
+    cout<<"1-Un jugador"<<endl<<"2-Dos jugadores"<<endl;
+    while(true){
+        string op;
+        try{
+            cin>>op;
+            if(op=="1"){
+                jugadores=false;
+                break;
+            }
+            else if(op=="2"){
+                jugadores=true;
+                break;
+            }
+        }
+        catch(int x){
+            cout<<"Ingrese 1 0 2"<<endl;
+        }
+    }
+    while(y){
+        cout<<"c-Cargar datos desde un archivo"<<endl<<"l-Grafo por lotes"<<endl;
+        string x;
+        cin>>x;
+        if(x=="l"){
+            crearCiudades();
+            enlazarCiudades();
+            y=false;
+        }
+        else if(x=="c"){
+            cout<<"nombre del archivo:"<<endl;
+            char dir[30];
+            cin>>dir;
+            y=!leerGrafo(dir);
+        }
+    }
     // cargar grafo desde archivo
 
     cargarMatAdy();
     imprimirMatAdy();
-    escribirGrafo();
-    leerGrafo();
 //    Dijkstra(5);
     //Dijkstra2(7);
 //    imprimirRutaCorta(1,12);
@@ -686,34 +671,82 @@ int main(int, char const**){
     sf::RectangleShape toolBar(sf::Vector2f(316,970)); /// tamano del menu donde estan las ciudades
     toolBar.setFillColor(sf::Color(70,187,217));
 
-    /////////////////////////////////////////////////////////////
-//Dibuja el primer Grafo (el circulo)
-////////////////////////////////////////////////////////////
-/*
-    sf::CircleShape firstGraph(7); // el 7 es el tamano de los vertices en pantalla
-    firstGraph.setFillColor(sf::Color::Blue);
-    firstGraph.setPosition(811, 344); // ubicacion en pantalla
-*/
-    /////////////////////////////////////////////////////////////
-//Dibuja el segundo grafo (el circulo)
-////////////////////////////////////////////////////////////
-
-    /*sf::CircleShape secondGraph(7);
-    secondGraph.setFillColor(sf::Color::Red);
-    secondGraph.setPosition(793, 350);*/
-
-
-/////////////////////////////////////////////////////////////
-//Dibuja la linea entre un grafo y otro.
-////////////////////////////////////////////////////////////
 
     sf::VertexArray lines(sf::LinesStrip,2);
     lines[0].position = sf::Vector2f(799,356);
     lines[1].position = sf::Vector2f(817,350);
     lines[0].color = sf::Color::Black;
     lines[1].color = sf::Color::Black;
-
-
+    window.draw(sprite);
+    window.draw(toolBar);
+    dibujarnombres();
+    window.draw(titulo);
+    dibujararcos();
+    dibujarpesos();
+    dibujarvertices();
+    window.display();
+    grafo=ini;
+    for(int x=1;x<tamano+1;x++){
+        cout<<x<<"-"<<grafo->ciudad<<endl;
+        grafo=grafo->sigV;
+    }
+    int origen,destino,origen2,destino2;
+    while(true){
+        try{
+            cout<<endl<<"jugador 1: ingrese el origen";
+            cin>>origen;
+            while(origen>tamano||origen<0){
+                cout<<endl<<"El indice del origen se encuentra fuera del dominio del grafo";
+                cin>>origen;
+            }
+            cout<<endl<<"jugador 1: ingrese el destino";
+            cin>>destino;
+            while(origen>tamano||origen<0){
+                cout<<endl<<"El indice del destino se encuentra fuera del dominio del grafo";
+                cin>>destino;
+            }
+            if(origen!=destino){
+                    destino--;
+                    origen--;
+                break;
+            }
+            else{
+                cout<<endl<<"jugador 1: El origen y el destino son iguales!!"<<endl;
+            }
+        }
+        catch(int tamano){
+            cout<<"jugador 1: Debe insertar numeros"<<endl;
+        }
+    }
+    if(jugadores){
+        while(true){
+            try{
+                cout<<endl<<"jugador 2: ingrese el origen";
+                cin>>origen2;
+                while(origen2>tamano||origen2<0){
+                    cout<<endl<<"El indice del origen se encuentra fuera del dominio del grafo";
+                    cin>>origen2;
+                    }
+                    cout<<endl<<"jugador 2: ingrese el destino";
+                    cin>>destino2;
+                    while(origen2>tamano||origen2<0){
+                        cout<<endl<<"El indice del destino se encuentra fuera del dominio del grafo";
+                        cin>>destino2;
+                    }
+                    if(origen2!=destino2){
+                            destino2--;
+                            origen2--;
+                        break;
+                    }
+                    else{
+                        cout<<endl<<"jugador 2: El origen y el destino son iguales!!"<<endl;
+                    }
+                }
+            catch(int tamano){
+                cout<<"jugador 2: Debe insertar numeros"<<endl;
+            }
+        }
+    }
     // Start the game loop
     while (window.isOpen())
     {
@@ -752,55 +785,86 @@ int main(int, char const**){
         window.draw(sprite);
 
         window.draw(toolBar);
-
-        //ventana.draw(lines);
-
-        // este draw solo se hace una vez
-
-        // Draw the string
-
-        //ventana.draw(titulo);
-
-
-        // Update the window
-        //ventana.display();
-        //cont++; // futuro contador para escribir todas las ciudades
-
-
-
+        dibujarnombres();
         window.draw(titulo);
 
-        struct vertice * tem = ini;
-
-        sf::Text ciudad(tem->ciudad, font, 18);
-
-        //cout<<"fuente";
-        while (contador >=1){
-            pos += 22;
-            string numero;
-            //cout<<contador<<" - ";
-            std::stringstream sstm;
-            sstm << tamano+1-contador << ") " << tem->ciudad; // concatenando
-            numero = sstm.str();
-            ciudad.setString(numero);
-            ciudad.setPosition(18,pos); //donde tamano empieza en 18 y al final del ciclo de la ventana le sumo 18
-            ciudad.setFillColor(sf::Color::Black);
-            window.draw(ciudad);
-            tem = tem ->sigV;
-            contador--;
-        }
-
-        // Update the window
-        stack<int> baneado,pila;
-        baneado.push(8);
-        pila=Dijkstra(16,21,baneado);
-        dibujararcos();
-        dibujarruta(pila);
+        pila=Dijkstra(origen,destino,baneado);
         dibujarpesos();
         dibujarvertices();
+        dibujararcos();
+        dibujarruta(pila,sf::Color::Red,0);
+        if (jugadores){
+            pila2=Dijkstra(origen2,destino2,baneado2);
+            dibujarruta(pila2,sf::Color::Green,4);
+        }
         window.display();
-        contador = tamano-1; // futuro contador para escribir todas las ciudade
-        pos = 18;
+        if(pila.size()==0){
+            cout<<"Jugador 1: Se eliminará el ultimo nodo baneado"<<endl;
+            baneado.pop();
+        }
+        else{
+            contador = tamano-1;
+            if (origen!=destino){
+                int x=pila.top();
+                pila.pop();
+                cout<<"Jugador 1: Siguiente direccion "<<pila.top()+1<<" continuar? s/n"<<endl;
+                pila.push(x);
+                string opcion;
+                while(true){
+                    cin>>opcion;
+                    if (opcion=="s"){
+                        pila.pop();
+                        origen=pila.top();
+                        break;
+                    }
+                    else{
+                        pila.pop();
+                        baneado.push(pila.top());
+                        pila.push(origen);
+                        break;
+                    }
+                }
+            }
+            else{
+                cout<<"Jugador 1 ha llegado a su destino"<<endl;
+                string ok;
+                cin>>ok;
+            }
+        }
+        if(jugadores){
+            if(pila2.size()==0){
+                cout<<"Jugador 2: Se eliminará el ultimo nodo baneado"<<endl;
+                baneado2.pop();
+            }
+            else{
+                if(origen2!=destino2){
+                    int x=pila2.top();
+                    pila2.pop();
+                    cout<<"Jugador 2: Siguiente direccion "<<pila2.top()+1<<" continuar? s/n"<<endl;
+                    pila2.push(x);
+                    string opcion;
+                    while(true){
+                        cin>>opcion;
+                        if (opcion=="s"){
+                            pila2.pop();
+                            origen2=pila2.top();
+                            break;
+                        }
+                        else{
+                            pila2.pop();
+                            baneado2.push(pila2.top());
+                            pila2.push(origen2);
+                            break;
+                        }
+                    }
+                }
+                else{
+                    cout<<"Jugador 2 ha llegado a su destino"<<endl;
+                    string ok;
+                    cin>>ok;
+                }
+            }
+        }
     }
 
     return EXIT_SUCCESS;
