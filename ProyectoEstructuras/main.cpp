@@ -25,18 +25,18 @@ int tamanoFuente = 38;
 sf::RenderWindow window(sf::VideoMode(1408, 970), "Waze - TEC");
 int contador = 32;
 int pos = 18;
-fstream archivo("grafo.saiyajin", ios::in | ios::out |ios::binary | ios::trunc);
+fstream archivo("grafo.txt", ios::in | ios::out |ios::binary);
 sf::Font font;
 struct arco {
     struct vertice *destino;
     struct vertice *origen;
     int distancia;
-    string stdestino,storigen;
+    char stdestino[30],storigen[30];
     struct arco *sigA;
 };
 
 struct vertice{
-    char ciudad[100];
+    char ciudad[30];
     int numeroCiudad;  // cada ciudad tiene un numero de 0 a 32
     int x,y,cantidadArcos;
     struct vertice *sigV;
@@ -80,7 +80,7 @@ bool* visitadoV2=new bool[tamano];
 par* distancia1=new par[tamano];
 par* distancia2=new par[tamano];
 
-void insertarCiudad(char pciudad[100], int x,int y){
+void insertarCiudad(char pciudad[], int x,int y){
     string ciudad = pciudad;
     struct vertice *nnv = new vertice();
 
@@ -104,7 +104,7 @@ void insertarCiudad(char pciudad[100], int x,int y){
     //grafo = nnv;
 
 }
-struct vertice* buscar(char pciudad[]){
+struct vertice* buscar(string pciudad){
     struct vertice *tempV = ini;
     while(tempV!=NULL){
         string comp1=tempV->ciudad;
@@ -143,7 +143,7 @@ void inicializar(){
     }
 }
 
-void insertarRutas(char porigen[],char pdestino[], int pdistancia){
+void insertarRutas(char porigen[30],char pdestino[30], int pdistancia){
 
     struct vertice *origen =buscar (porigen);
     struct vertice *destino =buscar (pdestino);
@@ -153,8 +153,8 @@ void insertarRutas(char porigen[],char pdestino[], int pdistancia){
     }
 
     struct arco *nna = new arco();
-    nna->stdestino=pdestino;
-    nna->storigen=porigen;
+    strcpy(nna->stdestino,pdestino);
+    strcpy(nna->storigen,porigen);
     nna->destino=destino;
     nna->origen = origen;
 
@@ -200,29 +200,22 @@ char* tochar(string x){
 }
 void leerGrafo(){ // como identifico que estoy leyendo?
 
-    struct vertice *tempV=ini;
-    struct arco *tempA;
+    struct vertice tempV;
+    struct arco tempA;
     grafo=NULL;
     ini=NULL;
-    archivo.seekg(0,ios::beg);
-    tamano=31;
+    archivo.seekg(0);
     archivo.read(reinterpret_cast<char *> (&tamano), sizeof(int));
     cout<<tamano<<endl;
     char* charx;
     char* chary;
     for (int z=0;z<tamano;z++){
         archivo.read(reinterpret_cast<char *> (&tempV), sizeof(vertice));
-        cout<<tempV->ciudad<<"-"<<tempV->x<<"-"<<tempV->y<<"-"<<tempV->numeroCiudad<<"-"<<tempV->cantidadArcos<<endl;
-        charx=tochar(tempV->ciudad);
-        insertarCiudad(charx,tempV->x,tempV->y);
-        z=0;
+        insertarCiudad(tempV.ciudad,tempV.x,tempV.y);
     }
     while(!archivo.eof()){
         archivo.read(reinterpret_cast<char *> (&tempA), sizeof(arco));
-        cout<<tempA->storigen<<"-"<<tempA->stdestino<<"-"<<tempA->distancia<<endl;
-        charx=tochar(tempA->storigen);
-        chary=tochar(tempA->stdestino);
-        insertarRutas(charx,chary,tempA->distancia);
+        insertarRutas(tempA.storigen,tempA.stdestino,tempA.distancia);
     }
     calculartamano();
     //archivo.
@@ -230,20 +223,18 @@ void leerGrafo(){ // como identifico que estoy leyendo?
 
 void escribirGrafo(){ // escribe el grafo en el archivo
     // primero inserto el vertice y luego todos los arcos que tenga y asi sucesivamente
-
+    fstream archivo("grafo.txt", ios::in | ios::out |ios::binary | ios::trunc);
     struct vertice *tempV=ini;
     struct arco *tempA;
     if (tempV==NULL){
         cout<<"NULL"<<endl;
     }
-    archivo.seekg(0,ios::end);
+    archivo.seekg(0);
+    tamano;
     archivo.write(reinterpret_cast<char *> (&tamano), sizeof(int));
-    char* charx;
-    char* chary;
     while(tempV!=NULL){
-        archivo.seekg(0,ios::end);
-        cout<<tempV->ciudad<<"-"<<tempV->x<<"-"<<tempV->y<<"-"<<tempV->numeroCiudad<<"-"<<tempV->cantidadArcos<<sizeof(vertice)<<endl;
-        archivo.write(reinterpret_cast<char *> (&tempV), sizeof(vertice));
+        archivo.seekg(0, ios::end);
+        archivo.write(reinterpret_cast<char *> (tempV), sizeof(vertice));
         tempV = tempV->sigV;
     }
     tempV=ini;
@@ -251,8 +242,7 @@ void escribirGrafo(){ // escribe el grafo en el archivo
         tempA=tempV->sigA;
         while(tempA!=NULL){
             archivo.seekg(0,ios::end);
-            cout<<tempA->storigen<<"-"<<tempA->stdestino<<"-"<<tempA->distancia<<endl;
-            archivo.write(reinterpret_cast<char *> (&tempA), sizeof(vertice));
+            archivo.write(reinterpret_cast<char *> (tempA), sizeof(arco));
             tempA = tempA ->sigA;
         }
         tempV = tempV->sigV;
@@ -284,12 +274,8 @@ void imprimirMatAdy(){
 }
 stack<int> Dijkstra(int origen,int destino,stack<int> baneados){
     cout<<"Desde nodo "<<origen+1<<" hasta nodo "<<destino+1<<endl;
-    grafo=ini;
     int actual=origen;
     stack<int> camino;
-    for(int x=0;x<origen;x++){
-        grafo=grafo->sigV;
-    }
     int** tabla=new int*[tamano];
     for (int x=0;x<tamano;x++){
         tabla[x]=new int[3];
@@ -310,12 +296,11 @@ stack<int> Dijkstra(int origen,int destino,stack<int> baneados){
         tempV=buscar(actual);
         tempA=tempV->sigA;
         while(tempA!=NULL){
-            if (tabla[buscar(tempA->destino)][0]==INF||tabla[buscar(tempA->destino)][0]>tabla[actual][0]+tempA->distancia){
+            if (tabla[buscar(tempA->destino)][0]==INF || tabla[buscar(tempA->destino)][0]>tabla[actual][0]+tempA->distancia){
                 tabla[buscar(tempA->destino)][0]=tabla[actual][0]+tempA->distancia;
                 tabla[buscar(tempA->destino)][1]=actual;
             }
             tempA=tempA->sigA;
-
         }
         for(int y=0;y<tamano;y++){
             if (tabla[y][0]!=INF&&tabla[y][2]!=1){
@@ -342,85 +327,85 @@ stack<int> Dijkstra(int origen,int destino,stack<int> baneados){
         aux.push(actual);
     }
     while(!aux.empty()){
-            cout<<aux.top()<<"-";
+        cout<<aux.top()<<"-";
         camino.push(aux.top());
         aux.pop();
     }
     cout<<endl;
     return camino;
 }
-void Dijkstra(int inicioV1){
-
-	inicializar();
-	int x = V1.size();
-	V1.push( nodo(inicioV1,0)); //Insertamos el vértice inicial en la Cola de Prioridad
-    distancia1[ inicioV1 ].valorDistancia = 0;      //Este paso es importante, inicializamos la distancia del inicial como 0
-    int actual , adyacente , peso;
-    while( !V1.empty() ){                   //Mientras cola no este vacia
-
-        actual = V1.top().first;            //Obtengo de la cola el nodo con menor peso, en un comienzo será el inicial
-        V1.pop();                           //Sacamos el elemento de la cola
-        if( visitadoV1[ actual ] )
-			continue; //Si el vértice actual ya fue visitado entonces sigo sacando elementos de la cola
-
-		visitadoV1[ actual ] = true;         //Marco como visitado el vértice actual
-
-        for( int i = 0 ; i < tamano ; ++i ){ //reviso sus adyacentes del vertice actual
-            if(matAdy[actual][i] != INF){
-	            peso = matAdy[actual][i]  ;        //peso de la arista que une actual con adyacente ( actual , adyacente )
-	            if( !visitadoV1[ i ] ){        //si el vertice adyacente no fue visitado
-
-	            	if( distancia1[ actual ].valorDistancia + peso < distancia1[ i ].valorDistancia ){
-				        distancia1[ i ].valorDistancia = distancia1[ actual ].valorDistancia + peso; //relajamos el vertice actualizando la distancia
-				        distancia1[ i ].verticeOrigen = actual;
-				        V1.push( nodo( i , distancia1[ i ].valorDistancia ) ); //agregamos adyacente a la cola de prioridad
-    				}
-				}
-        	}
-        }
-    }
-}
-void imprimirRutaCorta(int destinoF1, int destinoF2){
-    int dest1 = destinoF1-1;
-    int dest2 = destinoF2-1;
-    stack<int> pila;
-    stack<int> pila2;
-    int dist1=distancia1[dest1].valorDistancia;
-    int dist2=distancia2[dest2].valorDistancia;
-    while(dest1 != INF)
-    {
-        pila.push(dest1);
-        dest1= distancia1[dest1].verticeOrigen;
-    }
-
-    cout <<endl<< "Ruta mas corta para llegar a " << destinoF1 << " desde el vertice inicial es:" << endl;
-    while(pila.size()!=0)
-    {
-        cout << pila.top()+1 ;
-        pila.pop();
-        if (pila.size() != 0)
-            cout << " - ";
-    }
-    cout << endl;
-    cout << "Distancia total de la ruta: " << dist1 << endl;
-
-    while(dest2 != INF)
-    {
-        pila2.push(dest2);
-        dest2= distancia2[dest2].verticeOrigen;
-    }
-
-    cout <<endl<< "Ruta mas corta para llegar a " << destinoF2 << " desde el vertice es:" << endl;
-    while(pila2.size()!=0)
-    {
-        cout << pila2.top()+1 ;
-        pila2.pop();
-        if (pila2.size() != 0)
-            cout << " - ";
-    }
-    cout << endl;
-    cout << "Distancia total de la ruta: " << dist2 << endl;
-}
+//void Dijkstra(int inicioV1){
+//
+//	inicializar();
+//	int x = V1.size();
+//	V1.push( nodo(inicioV1,0)); //Insertamos el vértice inicial en la Cola de Prioridad
+//    distancia1[ inicioV1 ].valorDistancia = 0;      //Este paso es importante, inicializamos la distancia del inicial como 0
+//    int actual , adyacente , peso;
+//    while( !V1.empty() ){                   //Mientras cola no este vacia
+//
+//        actual = V1.top().first;            //Obtengo de la cola el nodo con menor peso, en un comienzo será el inicial
+//        V1.pop();                           //Sacamos el elemento de la cola
+//        if( visitadoV1[ actual ] )
+//			continue; //Si el vértice actual ya fue visitado entonces sigo sacando elementos de la cola
+//
+//		visitadoV1[ actual ] = true;         //Marco como visitado el vértice actual
+//
+//        for( int i = 0 ; i < tamano ; ++i ){ //reviso sus adyacentes del vertice actual
+//            if(matAdy[actual][i] != INF){
+//	            peso = matAdy[actual][i]  ;        //peso de la arista que une actual con adyacente ( actual , adyacente )
+//	            if( !visitadoV1[ i ] ){        //si el vertice adyacente no fue visitado
+//
+//	            	if( distancia1[ actual ].valorDistancia + peso < distancia1[ i ].valorDistancia ){
+//				        distancia1[ i ].valorDistancia = distancia1[ actual ].valorDistancia + peso; //relajamos el vertice actualizando la distancia
+//				        distancia1[ i ].verticeOrigen = actual;
+//				        V1.push( nodo( i , distancia1[ i ].valorDistancia ) ); //agregamos adyacente a la cola de prioridad
+//    				}
+//				}
+//        	}
+//        }
+//    }
+//}
+//void imprimirRutaCorta(int destinoF1, int destinoF2){
+//    int dest1 = destinoF1-1;
+//    int dest2 = destinoF2-1;
+//    stack<int> pila;
+//    stack<int> pila2;
+//    int dist1=distancia1[dest1].valorDistancia;
+//    int dist2=distancia2[dest2].valorDistancia;
+//    while(dest1 != INF)
+//    {
+//        pila.push(dest1);
+//        dest1= distancia1[dest1].verticeOrigen;
+//    }
+//
+//    cout <<endl<< "Ruta mas corta para llegar a " << destinoF1 << " desde el vertice inicial es:" << endl;
+//    while(pila.size()!=0)
+//    {
+//        cout << pila.top()+1 ;
+//        pila.pop();
+//        if (pila.size() != 0)
+//            cout << " - ";
+//    }
+//    cout << endl;
+//    cout << "Distancia total de la ruta: " << dist1 << endl;
+//
+//    while(dest2 != INF)
+//    {
+//        pila2.push(dest2);
+//        dest2= distancia2[dest2].verticeOrigen;
+//    }
+//
+//    cout <<endl<< "Ruta mas corta para llegar a " << destinoF2 << " desde el vertice es:" << endl;
+//    while(pila2.size()!=0)
+//    {
+//        cout << pila2.top()+1 ;
+//        pila2.pop();
+//        if (pila2.size() != 0)
+//            cout << " - ";
+//    }
+//    cout << endl;
+//    cout << "Distancia total de la ruta: " << dist2 << endl;
+//}
 void crearCiudades(){
     // 33 ciudades
     insertarCiudad("San Jose",902,404);
@@ -649,16 +634,17 @@ int main(int, char const**){
     crearCiudades();
     enlazarCiudades();
 
+
     // cargar grafo desde archivo
 
     cargarMatAdy();
     imprimirMatAdy();
-//    escribirGrafo();
-//    leerGrafo();
-    Dijkstra(5);
+    escribirGrafo();
+    leerGrafo();
+//    Dijkstra(5);
     //Dijkstra2(7);
-    imprimirRutaCorta(1,12);
-    Dijkstra(5);
+//    imprimirRutaCorta(1,12);
+//    Dijkstra(5);
 //    imprimirRutaCorta(13);
     struct vertice * tempV = ini;
 
@@ -803,6 +789,7 @@ int main(int, char const**){
             tem = tem ->sigV;
             contador--;
         }
+
         // Update the window
         stack<int> baneado,pila;
         baneado.push(8);
