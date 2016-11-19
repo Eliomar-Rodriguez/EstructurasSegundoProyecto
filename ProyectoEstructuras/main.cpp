@@ -26,6 +26,7 @@ sf::RenderWindow window(sf::VideoMode(1408, 970), "Waze - TEC");
 int contador = 32;
 int pos = 18;
 fstream archivo("grafo.saiyajin", ios::in | ios::out |ios::binary | ios::trunc);
+sf::Font font;
 struct arco {
     struct vertice *destino;
     struct vertice *origen;
@@ -106,13 +107,21 @@ void insertarCiudad(char pciudad[100], int x,int y){
 struct vertice* buscar(char pciudad[]){
     struct vertice *tempV = ini;
     while(tempV!=NULL){
-        if(tempV->ciudad==pciudad)
+        string comp1=tempV->ciudad;
+        string comp2=pciudad;
+        if(comp1==comp2)
             return tempV;
         tempV=tempV->sigV;
     }
     return NULL;
 }
-
+struct vertice* buscar(int indice){
+    grafo =ini;
+    for(int x=0;x<indice;x++){
+        grafo=grafo->sigV;
+    }
+    return grafo;
+};
 
 void inicializar(){
     for( int i = 0 ; i <= tamano ; ++i ){
@@ -497,6 +506,39 @@ void enlazarCiudades(){
     insertarRutas("Manzanillo","Palmares",93);
     insertarRutas("Manzanillo","Paquera",105);
 }
+void dibujarruta(stack<int> pila){
+    while(pila.size()!=1)
+    {
+        int origen=pila.top();
+        pila.pop();
+        int destino=pila.top();
+        sf::Vertex line[] =
+        {
+            sf::Vertex(sf::Vector2f(buscar(origen)->x+10, buscar(origen)->y+10)),
+            sf::Vertex(sf::Vector2f(buscar(destino)->x+10, buscar(destino)->y+10))
+        };
+        sf::Color color=sf::Color::Red;
+        line[1].color=color;
+        line[0].color=color;
+        window.draw(line, 2, sf::Lines);
+    }
+}
+void dibujarpesos(){
+    grafo=ini;
+    while (grafo!=NULL){
+        arco* aux=grafo->sigA;
+        while(aux!=NULL){
+            stringstream ss;
+            ss << aux->distancia;
+            sf::Text label(ss.str(), font, 10);
+            label.setPosition(((aux->origen->x+aux->destino->x+10)/2),((aux->origen->y+aux->destino->y+10)/2));
+            label.setColor(sf::Color::Magenta);
+            window.draw(label);
+            aux=aux->sigA;
+        }
+    grafo=grafo->sigV;
+    }
+}
 void dibujararcos(){
     grafo=ini;
     while (grafo!=NULL){
@@ -504,8 +546,8 @@ void dibujararcos(){
         while(aux!=NULL){
             sf::Vertex line[] =
             {
-                sf::Vertex(sf::Vector2f(aux->origen->x+5, aux->origen->y+5)),
-                sf::Vertex(sf::Vector2f(aux->destino->x+5, aux->destino->y+5))
+                sf::Vertex(sf::Vector2f(aux->origen->x+10, aux->origen->y+10)),
+                sf::Vertex(sf::Vector2f(aux->destino->x+10, aux->destino->y+10))
             };
             sf::Color color=sf::Color::Blue;
             line[1].color=color;
@@ -521,13 +563,10 @@ void dibujarvertices(){
     int cont=1;
     sf::CircleShape selloVertice(10);
     grafo=ini;
-    sf::Font font;
-        if (!font.loadFromFile("comic.ttf")) {
-        }
     sf::Text texto("", font, 12);
     while(grafo!=NULL){
         selloVertice.setPosition(grafo->x,grafo->y);
-        selloVertice.setFillColor(sf::Color::Red);
+        selloVertice.setFillColor(sf::Color::Green);
         window.draw(selloVertice);
         stringstream ss;
         ss << cont;
@@ -540,6 +579,7 @@ void dibujarvertices(){
     }
     }
 int main(int, char const**){
+    font.loadFromFile("comic.ttf");
     // crear grafo para luego cargarlo al archivo
     crearCiudades();
     enlazarCiudades();
@@ -548,8 +588,8 @@ int main(int, char const**){
 
     cargarMatAdy();
     imprimirMatAdy();
-    escribirGrafo();
-    leerGrafo();
+//    escribirGrafo();
+//    leerGrafo();
     Dijkstra(5);
     //Dijkstra2(7);
     imprimirRutaCorta(1,12);
@@ -699,7 +739,17 @@ int main(int, char const**){
             contador--;
         }
         // Update the window
+        int dest1 = 0;
+        stack<int> pila;
+        int dist1=distancia1[dest1].valorDistancia;
+        while(dest1 != INF)
+        {
+            pila.push(dest1);
+            dest1= distancia1[dest1].verticeOrigen;
+        }
         dibujararcos();
+        dibujarruta(pila);
+        dibujarpesos();
         dibujarvertices();
         window.display();
         contador = tamano-1; // futuro contador para escribir todas las ciudade
