@@ -122,6 +122,15 @@ struct vertice* buscar(int indice){
     }
     return grafo;
 };
+int buscar(vertice* x){
+    grafo=ini;
+    for(int y=0;y<tamano;y++){
+        if (grafo->ciudad==x->ciudad){
+            return y;
+        }
+        grafo=grafo->sigV;
+    }
+}
 
 void inicializar(){
     for( int i = 0 ; i <= tamano ; ++i ){
@@ -249,7 +258,97 @@ void escribirGrafo(){ // escribe el grafo en el archivo
         tempV = tempV->sigV;
     }
 }
+string cargarNombre(int pos){
+    vertice* aux;
+    aux=ini;
+    if (pos>tamano){
+        return "Invalido";
+    }
+    for (int x=0;x<pos;x++){
+        aux=aux->sigV;
+    }
+    return aux->ciudad;
+}
+void imprimirMatAdy(){
+    int cont=0;
+	for(int i=0; i< tamano; i++){
+        cout<<endl<<"Vertice "<<i<<", "<<cargarNombre(i)<<endl;
+		for(int j= 0; j < tamano; j++){
+            if (matAdy[i][j]!=99){
+                cout<<j<<": "<<matAdy[i][j]<<" "<<endl;
+                cont++;
+            }
+		}
+	}
+	cout<<endl<<cont/2<<" arcos en total, "<<tamano<<" vertices"<<endl;
+}
+stack<int> Dijkstra(int origen,int destino,stack<int> baneados){
+    cout<<"Desde nodo "<<origen+1<<" hasta nodo "<<destino+1<<endl;
+    grafo=ini;
+    int actual=origen;
+    stack<int> camino;
+    for(int x=0;x<origen;x++){
+        grafo=grafo->sigV;
+    }
+    int** tabla=new int*[tamano];
+    for (int x=0;x<tamano;x++){
+        tabla[x]=new int[3];
+        tabla[x][0]=INF;
+        tabla[x][1]=INF;
+        tabla[x][2]=0;
+    }
+    tabla[origen][0]=0;
+    tabla[origen][1]=origen;
+    tabla[origen][2]=1;
+    vertice* tempV=buscar(actual);
+    arco* tempA=tempV->sigA;
+    while(!baneados.empty()){
+        tabla[baneados.top()][2]=1;
+        baneados.pop();
+    }
+    for (int x=0;x<tamano;x++){
+        tempV=buscar(actual);
+        tempA=tempV->sigA;
+        while(tempA!=NULL){
+            if (tabla[buscar(tempA->destino)][0]==INF||tabla[buscar(tempA->destino)][0]>tabla[actual][0]+tempA->distancia){
+                tabla[buscar(tempA->destino)][0]=tabla[actual][0]+tempA->distancia;
+                tabla[buscar(tempA->destino)][1]=actual;
+            }
+            tempA=tempA->sigA;
 
+        }
+        for(int y=0;y<tamano;y++){
+            if (tabla[y][0]!=INF&&tabla[y][2]!=1){
+                if (tabla[y][0]<tabla[actual][0]||tabla[actual][2]==1){
+                    actual=y;
+                }
+            }
+        }
+        tabla[actual][2]=1;
+    }
+    for (int a=0;a<tamano;a++){
+        if(tabla[a][1]!=INF){
+            cout<<a+1<<": "<<tabla[a][0]<<" - "<<tabla[a][1]+1<<" * "<<tabla[a][2]<<endl;
+        }
+        else{
+            cout<<a+1<<": "<<tabla[a][0]<<" - "<<"INF"<<" * "<<tabla[a][2]<<endl;
+        }
+    }
+    stack<int> aux;
+    actual=destino;
+    aux.push(actual);
+    while(actual!=origen){
+        actual=tabla[actual][1];
+        aux.push(actual);
+    }
+    while(!aux.empty()){
+            cout<<aux.top()<<"-";
+        camino.push(aux.top());
+        aux.pop();
+    }
+    cout<<endl;
+    return camino;
+}
 void Dijkstra(int inicioV1){
 
 	inicializar();
@@ -322,45 +421,11 @@ void imprimirRutaCorta(int destinoF1, int destinoF2){
     cout << endl;
     cout << "Distancia total de la ruta: " << dist2 << endl;
 }
-string cargarNombre(int pos){
-    vertice* aux;
-    aux=ini;
-    if (pos>tamano){
-        return "Invalido";
-    }
-    for (int x=0;x<pos;x++){
-        aux=aux->sigV;
-    }
-    return aux->ciudad;
-}
-void imprimirMatAdy(){
-    int cont=0;
-    string nombres [tamano]={};
-    vertice* aux;
-    aux=ini;
-    while (aux!=NULL){
-        nombres[tamano-cont]=aux->ciudad;
-        aux=aux->sigV;
-        cont++;
-    }
-    cout<<cont<<endl;
-    cont=0;
-	for(int i=0; i< tamano; i++){
-        cout<<endl<<"Vertice "<<i<<", "<<cargarNombre(i)<<endl;
-		for(int j= 0; j < tamano; j++){
-            if (matAdy[i][j]!=99){
-                cout<<j<<": "<<matAdy[i][j]<<" "<<endl;
-                cont++;
-            }
-		}
-	}
-	cout<<endl<<cont/2<<" arcos en total, "<<tamano<<" vertices"<<endl;
-}
 void crearCiudades(){
     // 33 ciudades
     insertarCiudad("San Jose",902,404);
     insertarCiudad("Naranjo",811,344);
-    insertarCiudad("Palmares",793,350);
+    insertarCiudad("Palmares",730,350);
     insertarCiudad("Zarcero",807,305);
     insertarCiudad("Alajuela",861,357);
     insertarCiudad("Sucre",805,275);
@@ -739,14 +804,9 @@ int main(int, char const**){
             contador--;
         }
         // Update the window
-        int dest1 = 0;
-        stack<int> pila;
-        int dist1=distancia1[dest1].valorDistancia;
-        while(dest1 != INF)
-        {
-            pila.push(dest1);
-            dest1= distancia1[dest1].verticeOrigen;
-        }
+        stack<int> baneado,pila;
+        baneado.push(8);
+        pila=Dijkstra(16,21,baneado);
         dibujararcos();
         dibujarruta(pila);
         dibujarpesos();
