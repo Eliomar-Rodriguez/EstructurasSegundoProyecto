@@ -79,6 +79,7 @@ void insertarCiudad(char pciudad[], int x,int y){
     nnv->sigV=NULL;
     nnv->y = y;
 
+
     if (grafo==NULL){
         grafo = nnv;
         ini = nnv;
