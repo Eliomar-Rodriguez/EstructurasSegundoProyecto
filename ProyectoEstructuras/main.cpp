@@ -12,7 +12,7 @@
 #include <sstream>
 #include<time.h>
 #include "fstream"
-
+#include <limits>
 using namespace std;
 
 #define INF 99             // tamano maximo de vertices
@@ -22,7 +22,8 @@ int** matAdy;
 int numCiudad = 0;
 
 int tamanoFuente = 38;
-sf::RenderWindow window(sf::VideoMode(1408, 970), "Waze - TEC");
+sf::RenderWindow window(sf::VideoMode(1200, 700), "Waze - TEC");
+ //   sf::RenderWindow window(sf::VideoMode(1408, 970), "Waze - TEC");//
 int contador = 32;
 int pos = 18;
 sf::Font font;
@@ -43,7 +44,10 @@ struct vertice{
     bool visitadoP1;
     bool visitadoP2;
 }*grafo,*ini,*punteroGrafo; // iniGraCarg es el inicio del grafo cargado del archivo
-
+void limpiarteclado(){
+    cin.clear();
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+}
 int calculartamano(){
     int cont=0;
     grafo=ini;
@@ -582,6 +586,21 @@ void dibujarnombres(){
         contador--;
     }
 }
+void muestraventana(){
+    window.requestFocus();
+    bool x=true;
+    while(x)
+    {
+        sf::Event event;
+        while(window.pollEvent(event))
+        {
+            if(event.type == sf::Event::Closed)
+                window.close();
+            else if(event.type == sf::Event::LostFocus)
+                x=false;
+        }
+    }
+}
 int main(int, char const**){
     stack<int> baneado,baneado2,pila,pila2;
     font.loadFromFile("comic.ttf");
@@ -637,7 +656,6 @@ int main(int, char const**){
 /*=====================                         PARTE GRAFICA                          =====================*/
 /*==========================================================================================================*/
     // Create the main window
- //   sf::RenderWindow window(sf::VideoMode(1408, 970), "Waze - TEC");//
     // Set the Icon
     sf::Image icon;
     if (!icon.loadFromFile("icon.png")) {
@@ -677,6 +695,7 @@ int main(int, char const**){
     lines[1].position = sf::Vector2f(817,350);
     lines[0].color = sf::Color::Black;
     lines[1].color = sf::Color::Black;
+    window.clear(sf::Color(153,217,234));
     window.draw(sprite);
     window.draw(toolBar);
     dibujarnombres();
@@ -695,13 +714,15 @@ int main(int, char const**){
         try{
             cout<<endl<<"jugador 1: ingrese el origen";
             cin>>origen;
-            while(origen>tamano||origen<0){
+            while(origen>tamano||origen<1){
+                limpiarteclado();
                 cout<<endl<<"El indice del origen se encuentra fuera del dominio del grafo";
                 cin>>origen;
             }
             cout<<endl<<"jugador 1: ingrese el destino";
             cin>>destino;
-            while(origen>tamano||origen<0){
+            while(origen>tamano||origen<1){
+                limpiarteclado();
                 cout<<endl<<"El indice del destino se encuentra fuera del dominio del grafo";
                 cin>>destino;
             }
@@ -723,13 +744,15 @@ int main(int, char const**){
             try{
                 cout<<endl<<"jugador 2: ingrese el origen";
                 cin>>origen2;
-                while(origen2>tamano||origen2<0){
+                while(origen2>tamano||origen2<1){
+                    limpiarteclado();
                     cout<<endl<<"El indice del origen se encuentra fuera del dominio del grafo";
                     cin>>origen2;
                     }
                     cout<<endl<<"jugador 2: ingrese el destino";
                     cin>>destino2;
-                    while(origen2>tamano||origen2<0){
+                    while(origen2>tamano||origen2<1){
+                        limpiarteclado();
                         cout<<endl<<"El indice del destino se encuentra fuera del dominio del grafo";
                         cin>>destino2;
                     }
@@ -811,6 +834,7 @@ int main(int, char const**){
                 pila.push(x);
                 string opcion;
                 while(true){
+                    muestraventana();
                     cin>>opcion;
                     if (opcion=="s"){
                         pila.pop();
@@ -827,8 +851,7 @@ int main(int, char const**){
             }
             else{
                 cout<<"Jugador 1 ha llegado a su destino"<<endl;
-                string ok;
-                cin>>ok;
+                muestraventana();
             }
         }
         if(jugadores){
@@ -844,6 +867,7 @@ int main(int, char const**){
                     pila2.push(x);
                     string opcion;
                     while(true){
+                        muestraventana();
                         cin>>opcion;
                         if (opcion=="s"){
                             pila2.pop();
@@ -860,13 +884,11 @@ int main(int, char const**){
                 }
                 else{
                     cout<<"Jugador 2 ha llegado a su destino"<<endl;
-                    string ok;
-                    cin>>ok;
+                    muestraventana();
                 }
             }
         }
     }
-
     return EXIT_SUCCESS;
 }
 
