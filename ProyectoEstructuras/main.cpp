@@ -22,7 +22,7 @@ int** matAdy;
 int numCiudad = 0;
 
 int tamanoFuente = 38;
-sf::RenderWindow window(sf::VideoMode(1200, 700), "Waze - TEC");
+sf::RenderWindow window(sf::VideoMode(1408, 970), "Waze - TEC");
  //   sf::RenderWindow window(sf::VideoMode(1408, 970), "Waze - TEC");//
 int contador = 32;
 int pos = 18;

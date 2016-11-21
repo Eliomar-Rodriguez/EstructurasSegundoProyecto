@@ -1387,7 +1387,7 @@
 	<string>
 	<vector>
 
-1479597251 source:f:\proyecto estructuras\proyectoestructuras\main.cpp
+1479627050 source:f:\proyecto estructuras\proyectoestructuras\main.cpp
 	<SFML/Graphics.hpp>
 	<string.h>
 	<iostream>
@@ -1402,6 +1402,7 @@
 	<sstream>
 	<time.h>
 	"fstream"
+	<limits>
 
 1479323934 f:\proyecto estructuras\sfml-2.4.0\include\sfml\graphics.hpp
 	<SFML/Window.hpp>
