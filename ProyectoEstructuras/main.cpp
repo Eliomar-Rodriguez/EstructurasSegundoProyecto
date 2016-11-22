@@ -201,7 +201,7 @@ bool leerGrafo(char nombre[30]){
     ini=NULL;
     archivo.seekg(0);
     archivo.read(reinterpret_cast<char *> (&tamano), sizeof(int));
-    cout<<"\nEl grafo cargado tiene "<<tamano<<"vertices"<<endl;
+    cout<<"\nEl grafo cargado tiene "<<tamano<<" vertices"<<endl;
     char* charx;
     char* chary;
     for (int z=0;z<tamano;z++){
@@ -218,7 +218,7 @@ bool leerGrafo(char nombre[30]){
 
 void escribirGrafo(){ // escribe el grafo en el archivo
     // primero inserto el vertice y luego todos los arcos que tenga y asi sucesivamente
-    fstream archivo("grafo31V.txt", ios::in | ios::out |ios::binary | ios::trunc);
+    fstream archivo("grafo26V.txt", ios::in | ios::out |ios::binary | ios::trunc);
     struct vertice *tempV=ini;
     struct arco *tempA;
     if (tempV==NULL){
@@ -308,15 +308,7 @@ stack<int> Dijkstra(int origen,int destino,stack<int> baneados){
             }
         }
         tabla[actual][2]=1;
-    }/*
-    for (int a=0;a<tamano;a++){
-        if(tabla[a][1]!=INF){
-            cout<<a+1<<": "<<tabla[a][0]<<" - "<<tabla[a][1]+1<<" * "<<tabla[a][2]<<endl;
-        }
-        else{
-            cout<<a+1<<": "<<tabla[a][0]<<" - "<<"INF"<<" * "<<tabla[a][2]<<endl;
-        }
-    }*/
+    }
     rutaTotal = tabla[destino][0];
     cout<<rutaTotal<<" KM"<<endl;
     actual=destino;
@@ -751,7 +743,7 @@ int main(int, char const**){
                     cout<<endl<<"\nJugador 2: Vuelva a ingresa la ciudad de origen ";
                     cin>>origen2;
                     }
-                    cout<<endl<<"Jugador 2: Ingresa la ciudad de destino";
+                    cout<<endl<<"Jugador 2: Ingresa la ciudad de destino ";
                     cin>>destino2;
                     while(origen2>tamano||origen2<1){
                         limpiarteclado();
